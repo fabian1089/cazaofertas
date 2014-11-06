@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CazaOfertas</title>
+	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css">
+	<style>
+	.segmented-control { text-align:center; }
+	.segmented-control .ui-controlgroup { display:inline; margin:.2em 0px; }
+
+	#map-page { width:100%; height:100%; }
+	#map-canvas { width:100%; height:100%; margin-top:-30px; padding:0px!important; }
+	#gmap-marker-link { color:#00a0df; text-decoration:none; }
+
+	.ui-gmap-canvas { width:100%; height:100%; }
+	.ui-gmap-infobox { display:none; }
+
+	#show-more .ui-li-heading { text-align:center; }
+	#show-more .ui-icon { visibility:hidden; }
+
+	.ui-li-has-count .ui-li-count { border-color:transparent; }
+	.wrap { white-space:normal; }
+	</style>
+	<link rel="stylesheet" href="_assets/css/jqm-demos.css">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+	<script src="js/jquery.js"></script>
+	<script src="_assets/js/index.js"></script>
+	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+	<!-- Google Maps JS assets are loaded at bottom of page for performance -->
+	<script>
+	
+	
+	function errorpos(){
+	alert('error al obtener la geolocalización');
+	}
+	
+	 document.addEventListener("deviceready", onDeviceReady, false);
+	 function onDeviceReady() {
+	 	  listCategorias();
+		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
+		  //obtener coordenadas ==> estas por defecto: lat:3.374963638067219 , lon:-76.51804110565183
+		  var registrado=window.localStorage.getItem("consecutivo");
+		//alert('lat:'+window.localStorage.getItem("latitud")+" , lon:"+window.localStorage.getItem("longitud"));
+		//if(registrado==null){ window.location.href='index.html#registro';  }else{ window.location.href='index.html#busqueda'; }
+  
+		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
+	 }
+	 
+	 function obtenerCoordenadas(position){
+	 
+	 var latitud=position.coords.latitude;
+	 var longitud=position.coords.longitude;
+
+		if(latitud==null){ latitud=3.374963638067219; }
+		if(longitud==null){ longitud=-76.51804110565183; }
+	 
+	 window.localStorage.setItem('latitud',latitud);
+	 window.localStorage.setItem('longitud',longitud);
+	 
+	 }
+	
+	
+	function mostrarLocal(id_local){
+	
+	alert('Listar todas las ofertas del local '+id_local);
+	
+	}
+	
+	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia){
+		
+		//consultar todo y pintarlo en detalle_oferta. 
+		//incluir: fotos de la oferta, de la tienda, mapa de còmo llegar
+		//hacerlo como pop up o como página?
+		
+		var encabezado="<h1>"+titulo+"</h1>";		
+		var oferta=descOferta;
+		
+		var tienda="<h3>"+nombre+"</h3>";
+		tienda+="<h5> "+direccion+" ("+distancia+" kms)</h5>";
+		tienda+="<p> "+tiendaDesc+" </p>";
+		tienda+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a>";
+		
+		var imagen_local="<img src='http://localhost/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
+		var mapa="";
+		
+		document.getElementById('div_encabezado').innerHTML=encabezado;
+		document.getElementById('div_oferta').innerHTML=oferta;
+		document.getElementById('div_tienda').innerHTML=tienda;
+		document.getElementById('div_mapa').innerHTML=mapa;
+		document.getElementById('contenido_imagen').innerHTML=imagen_local;
+		
+		
+		
+		
+		
+		window.location.href="index.html#detalle_oferta";
+		
+	/*	$.mobile.changePage('#detalle_oferta',{
+                       transition:'pop', 
+                       role:'page'
+                     }); //role:'dialog'
+		*/
+		}
+		
+		
+	// Método recursivo para colocar varias ofertas en un mismo marker
+	function listaOfertas(cadena,pos,response){
+	
+	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\");'> <strong> "+response[pos]['titulo']+": </strong> <br> "+response[pos]['descOferta']+" <br> </p>"
+	
+		if(pos>0){	
+			if(response[pos]['id_tienda']==response[pos-1]['id_tienda']){		
+			return listaOfertas(cadena,(pos-1),response);		
+			}
+		}	
+	return cadena;	
+	}
+		
+	
+	function buscarOfertas(){
+	
+	var palabra_clave=document.getElementById('palabra_clave').value;
+	var distancia=document.getElementById('distancia').value;
+	
+	var latitud=window.localStorage.getItem('latitud');
+	var longitud=window.localStorage.getItem('longitud');
+	
+	var categorias=document.getElementById('categorias_buscar');
+	var lista="categorias";
+	for(var cont=0;cont<categorias.length;cont++){	
+		if(categorias[cont].selected){
+		lista+=","+categorias[cont].value;
+		}	
+	}
+	
+	
+	$.ajax({
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=buscarOfertas&palabra="+palabra_clave+"&distancia="+distancia+"&categorias="+lista+"&latitud="+latitud+"&longitud="+longitud,
+				contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {				
+					
+					var lista=new Array();
+					var cadena="";
+					for(var cont=0;cont<response.length;cont++){
+				
+				/*var categ=[response[cont]['id'], response[cont]['nombre'], response[cont]['descripcion']];
+					
+					lista[cont]=categ;
+					//alert(lista[cont][1]);					
+					cadena+="<input type='checkbox' name='check_categorias' id='categoria_"+cont+"' class='custom' value='"+lista[cont][0]+"'  >  ";		
+					cadena+="<label for='categoria_"+cont+"'>"+lista[cont][1]+"</label>";
+					*/
+					var id_tienda=response[cont]['id_tienda'];
+					var id_oferta=response[cont]['id_oferta'];
+					var titulo=response[cont]['titulo'];
+					var nombre=response[cont]['nombre'];
+					var descOferta=response[cont]['descOferta'];
+					var direccion=response[cont]['direccion'];
+					var tiendaDesc=response[cont]['tiendaDesc'];
+					var latitud=response[cont]['latitud'];
+					var longitud=response[cont]['longitud'];
+					var distancia=response[cont]['distancia'];
+					
+					
+					
+					cadena+=" <li data-marker-info='"+latitud+","+longitud+"'>";
+								  //marker
+					cadena+="	  <div style='display:none;'> 					    <div class='ui-gmap-marker-info'> ";						
+					cadena+="	  	  <a id='gmap-marker-link'  data-rel='dialog' onclick='mostrarLocal(\""+id_tienda+"\");' ><h4>"+nombre+" <br> "+direccion+" </h4> </a>"; //título						
+					
+					cadena= listaOfertas(cadena,cont,response);
+					//cadena+="	  	  <p> <strong> "+titulo+": </strong> <br> "+descOferta+" </p>"; //cuerpo	
+					
+					cadena+="	  	</div>					  </div>";
+								  //lista
+					cadena+="      	  <a href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
+					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
+					cadena+="   	  	<div class='ui-li-count'>";
+					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
+					cadena+="  	  		</div>	            	  </a>";
+					cadena+="  	</li>";
+					
+					}				
+
+					document.getElementById("list-results").innerHTML =cadena;
+					document.location.href="index.html#map-page";
+											
+					},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se pudo realizar la acción. Por favor verifique su conexión a internet');
+					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			});
+	}
+	
+	
+	function listCategorias(){
+	
+	$.ajax({
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=categorias",
+				contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {				
+					
+					var lista=new Array();
+					var cadena="";
+					var cadena2="<option>Categorías</option>";
+					for(var cont=0;cont<response.length;cont++){
+					var categ=[response[cont]['id'], response[cont]['nombre'], response[cont]['descripcion']];
+					
+					lista[cont]=categ;
+					//alert(lista[cont][1]);					
+					cadena+="<input type='checkbox' name='check_categorias' id='categoria_"+cont+"' checked='checked' class='custom' value='"+lista[cont][0]+"'  >  ";		
+					cadena+="<label for='categoria_"+cont+"'>"+lista[cont][1]+"</label>";
+					
+					cadena2+="<option value='"+lista[cont][0]+"' selected='selected'> "+lista[cont][1]+" </option>";
+					
+					}	
+					
+					document.getElementById("listCateg").innerHTML =cadena;
+					document.getElementById("categorias_buscar").innerHTML =cadena2;
+							
+					window.localStorage.setItem("cantCateg",cont);
+					window.localStorage.setItem("categorias",lista);
+											
+					},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se completó el registro. Por favor verifique su conexión a internet');
+					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			});
+	
+	}
+	
+	
+	function guardarcategorias() {
+	
+	var cantidad=window.localStorage.getItem("cantCateg");
+	var cadena=window.localStorage.getItem("consecutivoUsuario");
+	for(var cont=0;cont<cantidad;cont++){
+	var categoria=document.getElementById("categoria_"+cont);
+		if(categoria.checked){
+		cadena+=","+categoria.value;
+		}
+	}
+	
+	//alert(cadena);
+	
+	$.ajax({
+	
+	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=guardarCategorias&categorias="+cadena,
+				contentType: "application/json",
+					
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {	
+
+				
+				if(response['exito']=='exito'){
+					alert('Categorías guardadas!!'); //falta guardar en local y mostrar en la pantalla!!!
+					document.location.href='index.html#busqueda';
+					}else{
+					alert('Por favor intentelo de nuevo');
+					}
+				
+				},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se completó el registro. Por favor verifique su conexión a internet');
+					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					//$.mobile.loading( "hide" );
+				}
+	
+	
+	
+	});
+		
+	}
+	
+	function enviarRegistro(){ 
+	
+	var nombre=document.getElementById('nombre').value;
+	var fecha_nac=document.getElementById('fecha_nac').value;
+	var sexo=document.getElementById('sexo').value;
+	var email=document.getElementById('email').value;
+	var enviar=document.getElementById('enviar_correo');
+	var enviar_correo="N";
+		if(enviar.checked){enviar_correo="S"; }
+			
+	var datos={'nombre':nombre, 'fecha_nac':fecha_nac,'sexo':sexo , 'email':email, 'accion':'registro', 'enviar_correo':enviar_correo};
+	
+	if(nombre!='' && fecha_nac!='' && email!=''){ //validar todos los datos
+	
+	$.ajax({
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=registro&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo,
+				contentType: "application/json",
+				data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {				
+					if(response['exito']=='exito'){
+					alert('Registro exitoso!!');
+					window.localStorage.setItem("consecutivoUsuario",response['id']);
+					document.location.href='index.html#categorias';
+					}else{
+					alert('Por favor intentelo de nuevo');
+					}
+						
+			  	},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se completó el registro. Por favor verifique su conexión a internet');
+					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			});
+			
+	}
+	
+	}
+	
+	$( document ).on( "pagecreate", "#map-page", function() {
+		var $mapSwitch = $( "#map-switch" ),
+		    $listSwitch = $( "#list-switch" ),
+			$map = $( "#map-canvas" ),
+	        $list = $( "#list-canvas" );
+
+	    $mapSwitch.on( "click", function( e ){
+	       	$map.show();
+	       	$map.gmap();
+	       	$list.hide();
+	    });
+
+	    $listSwitch.on( "click", function( e ){
+	       	$list.show();
+			$map.hide();
+	    });
+
+	    $( "#show-more a" ).on( "click", function( e ){
+			// Assume we already have a cached geolocation because it's not necessary for this example.
+			var location = location || {};
+			    location.coords = location.coords || {};
+				location.coords.latitude = location.coords.latitude || {};
+				location.coords.longitude = location.coords.longitude || {};
+
+			JQM.geo.startIndex = $( "#list-results li" ).size() -1; // exclude show more list item
+	    	JQM.geo.showMore( location );
+	    	e.preventDefault();
+	    });
+	});
+
+	/**
+	 * Geolocation configuration
+	 */
+	var JQM = JQM || {};
+	JQM.geo = {
+		location: "",
+		zip: "",
+		startIndex: "",
+
+	    showMore: function(latlng) {
+	    	$.mobile.loading( "show" );
+	    	JQM.geo.location = latlng;
+
+			$.ajax({
+			  	url: "showMore.html?lat="+JQM.geo.location.coords.latitude+"&lon="+JQM.geo.location.coords.longitude+"&zip="+JQM.geo.zip+"&startIndex="+JQM.geo.startIndex,
+			  	success: function( response ) {
+			  		var $listResults = $( "#list-results" );
+					$listResults.find( "#show-more" ).before(response);
+					$listResults.listview( "refresh" );
+					$.mobile.loading( 'hide' );
+			  	},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			});
+	    }
+	};
+	</script>
+</head>
+<body>
+<!-- Registro -->
+<div data-role="page" class="jqm-demos" id="registro">
+
+
+	<div data-role="header" class="jqm-header">
+		<h2><img src="../_assets/img/jquery-logo.png" alt="jQuery Mobile"></h2>
+		
+	</div><!-- /header -->
+
+    <div role="main" > <!--lass="ui-content jqm-content" -->
+
+<div align="center" style="height:90%;">
+	 <h3 align="center">Bienvenido a Cazaofertas</h3>
+     <span style="font-size:12px;"> Los siguientes datos son usados para que el usuario pueda participar en las <strong>rifas periódicas</strong> que realizan nuestros patrocinadores y para recibir información sobre <strong>"Super ofertas"</strong>. <br/> Si usted no desea participar, puede omitir este paso.  </span>
+   
+   <form action="index.html#config" method="post"> 
+     <div data-role="fieldcontain">
+       <label for="textinput">Nombre:</label>
+       <input type="text" name="nombre" id="nombre" value=""  required="required"/>
+     </div>
+     <div data-role="fieldcontain">
+       <label for="textinput">Email:</label>
+       <input type="email" name="email" id="email" value=""  required="required"/>
+     </div>
+     <div data-role="fieldcontain">
+       <label for="textinput">Fecha Nacimiento:</label>
+       <input type="date" name="fecha_nac" id="fecha_nac" value=""  required="required"/>
+     </div>
+     <div data-role="fieldcontain">
+       <label for="flipswitch">Sexo:</label>
+       <select name="flipswitch" id="sexo"  data-role="slider">
+         <option value="M">M</option>
+         <option value="F">F</option>
+       </select>
+     </div>
+
+<div data-role="fieldcontain">
+  <fieldset data-role="controlgroup" data-type="vertical">
+        <label for="enviar_correo">Enviarme súper ofertas al email</label>
+    <input name="enviar_correo" type="checkbox" class="custom" id="enviar_correo" value="S" checked="checked"  />
+  </fieldset>
+</div>
+
+<input type="submit" value="Enviar" id="enviarDatos" onclick="enviarRegistro();" data-role="button" data-inline="true"/>
+
+<a href="index.html#busqueda" data-role="button" data-inline="true" data-transition="slide">Omitir</a>
+	</form>
+     </div>
+
+
+     <!--  <a href="#map-page" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini ui-icon-arrow-r ui-btn-icon-right">Open demo</a>
+-->
+
+	</div><!-- /content -->
+	   
+
+
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
+		<p>Desarrollado por C&F Creations SAS </p>
+		<p>info@cf-creations.com</p>
+	</div><!-- /footer -->
+	
+	
+
+</div><!-- /page -->
+<!-- Fin Registro -->
+
+<!-- Categorias -->
+<div data-role="page" id="categorias" class="jqm-demos">
+  <div data-role="header">
+    <h1>Encabezado</h1>
+  </div>
+  <div data-role="content" align="center">
+  
+  <span> Selecciona las categorías de las cuales quieres recibir <strong>Super ofertas</strong> </span>
+    <div data-role="fieldcontain" align="center">
+      <fieldset data-role="controlgroup" data-type="vertical" id="listCateg">
+    
+      <!--  <input type="checkbox" name="checkbox1" id="checkbox1_0" class="custom" value="" />
+        <label for="checkbox1_0">Opción</label>
+        <input type="checkbox" name="checkbox1" id="checkbox1_1" class="custom" value="" />
+        <label for="checkbox1_1">Opción</label> -->
+    
+      </fieldset>
+           
+    </div>
+	
+	
+  
+  <div data-role="controlgroup" data-type="horizontal" >
+  <a href="#" data-role="button" id="botonCategorias" onclick="guardarcategorias();">Guardar</a>
+
+  </div>
+      
+  
+  
+  </div>
+ 
+ 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
+		<p>Desarrollado por C&F Creations SAS </p>
+		<p>info@cf-creations.com</p>
+	</div><!-- /footer -->
+ 
+</div>
+<!-- Fin categorías -->
+
+
+<!-- Busqueda -->
+<div data-role="page" class="jqm-demos" id="busqueda">
+
+	<div data-role="header" class="jqm-header">
+		<h2><img src="../_assets/img/jquery-logo.png" alt="jQuery Mobile"></h2>
+		
+	</div><!-- /header -->
+
+    <div role="main" > <!--lass="ui-content jqm-content" -->
+      <div data-role="fieldcontain">
+        <label for="textinput">Palabra clave:</label>
+        <input type="text" name="palabra_clave" id="palabra_clave" value="" placeholder="Separar con coma (,) si desea ingresar más de una palabra clave" />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="slider">Distancia máxima (km):</label>
+        <input type="range" name="distancia" id="distancia" value="10" min="1" max="200" />
+      </div>
+   
+   <!-- desde aqui -->
+   <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br">
+		<label for="select-choice-9" class="select ui-select">Categorías:</label>
+		<div class="ui-select">
+        <select name="select-choice-9" id="categorias_buscar" multiple="multiple" data-native-menu="false" tabindex="-1">
+			
+			<!--<option>Categorías</option>
+			<option value="standard" selected>Standard: 7 day</option>
+			<option value="rush" selected>Rush: 3 days</option>
+			<option value="express" selected>Express: next day</option>
+			<option value="overnight" selected>Overnight</option>-->
+            		
+		</select></div>
+	</div>
+   <!-- hasta aqui -->
+   
+<br>
+	<a href="#" data-role="button" id="botonCategorias" onclick="buscarOfertas();">Buscar</a>
+	
+	
+</div><!-- /content -->
+	   
+
+
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
+		<p>Desarrollado por C&F Creations SAS </p>
+		<p>info@cf-creations.com</p>
+	</div><!-- /footer -->
+	
+	
+
+</div><!-- /page -->
+<!-- Fin Busqueda -->
+
+<!-- Detalle oferta -->
+<div data-role="page" id="detalle_oferta">
+  <div data-role="header" id="div_encabezado">
+    
+  </div>
+  <div data-role="content" id="contenido_oferta">
+  
+  <div data-role="tabs" id="tabs"> 
+  <div data-role="navbar">
+    <ul>
+      <li><a href="#div_oferta" data-ajax="false">La Oferta</a></li>
+      <li><a href="#div_tienda" data-ajax="false">El Lugar</a></li>
+      <li><a href="#div_mapa" data-ajax="false">Cómo llegar</a></li>
+    </ul>
+  </div>
+  <div id="div_oferta" class="ui-body-d ui-content">
+    
+  </div>
+  <div id="div_tienda">
+    
+  </div>
+  <div id="div_mapa"> 
+  
+  </div>
+  
+</div>
+  <div data-role="fieldcontain">
+    <fieldset data-role="controlgroup">
+      
+      <input type="checkbox" name="bloquear" id="bloquear" class="custom" value="S" />
+      <label for="bloquear">No volver a mostrar esta oferta en busquedas futuras</label>
+    </fieldset>
+  </div>
+<a href="#aja" data-role="button" data-rel="back">Volver</a>
+  
+  
+  </div>
+   
+</div>
+<!-- Fin Detalle Oferta -->
+
+<!-- Imagenes -->
+<div data-role="page" id="imagenes">
+  <div data-role="header">
+    <h1>CazaOfertas</h1>
+  </div>
+  <div data-role="content" id="contenido_imagen">
+  </div>
+</div>
+<!-- Fin Imagenes -->
+
+
+<!-- Mapa -->
+	<div data-role="page" id="map-page">
+		<div data-role="header" data-position="fixed">
+			<div class="segmented-control ui-bar-d">
+		 	<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+	  			<input type="radio" name="switch" id="list-switch" checked="true">
+				<label for="list-switch">Lista</label>
+	         	<input type="radio" name="switch" id="map-switch">
+	         	<label for="map-switch">Mapa</label>
+		    </fieldset>
+			</div>
+		</div>
+		<div role="main" class="ui-content ui-content-list">
+	        <div id="list-canvas">
+	            <ul id="list-results" data-role="listview">
+	            
+				<!--	<li data-marker-info="44.811805,-93.176352">
+					  <div style="display:none;">
+					    <div class="ui-gmap-marker-info">
+					  	  <h1><a id="gmap-marker-link" href="#">Fast Clinic</a></h1>
+					  	  <p>8888 Fast Rd</p>
+					  	</div>
+					  </div>
+	            	  <a href="#">
+	            	  	<h1 class="ui-gmap-marker-title wrap">Fast Clinic</h1>
+	            	  	<div class="ui-li-count">
+	            	  		<span>0.71 miles</span>
+	            	  	</div>
+	            	  </a>
+	            	</li> -->
+	            	
+	            	
+					<!-- <li id="show-more"><a href=""><h1>Show more</h1></a></li> -->
+				</ul>
+			</div>
+		</div>
+		<div role="main" class="ui-content" id="map-canvas" data-initial-view="-76.518,3.374,10" style="display:none;"></div>
+	<!-- Load map assets at bottom for performance    3.374963638067219 , lon:-76.51804110565183-->
+	<script type="text/javascript" src="jquery.gmap.js"></script>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/infobox/1.0/src/infobox_packed.js"></script>
+	</div>
+    <!-- Fin Mapa -->
+    
+
+</body>
+</html>
