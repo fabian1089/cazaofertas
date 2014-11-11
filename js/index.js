@@ -61,7 +61,7 @@ var app = {
     },
     // result contains any message sent from the plugin call
     successHandler: function(result) {
-        alert('Callback Success! Result = '+result)
+        //alert('Callback Success! Result = '+result)
     },
     errorHandler:function(error) {
         alert(error);
@@ -73,7 +73,7 @@ var app = {
                 if ( e.regid.length > 0 )
                 {
                     console.log("Regid " + e.regid);
-                    alert('registration id = '+e.regid);
+                   // alert('registration id = '+e.regid);
                     //Cuando se registre le pasamos el regid al input
                    document.getElementById('regId').value = e.regid;
 				   window.localStorage.getItem("gcm_id",e.regid);
@@ -83,6 +83,7 @@ var app = {
             case 'message':
               // NOTIFICACION!!!
               alert('message = '+e.message+' msgcnt = '+e.msgcnt);
+			  window.location.href="#map-page";
             break;
  
             case 'error':
