@@ -38,15 +38,16 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+		alert('receiveEvent');
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
-
+		alert('vares');
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-
+alert('setatributes');
         console.log('Received Event: ' + id);
-        var pushNotification = window.plugins.pushNotification;
+        var pushNotification = window.plugins.pushNotification;  alert('antes del push');
         if (device.platform == 'android' || device.platform == 'Android') {
             alert("Register called");
             //tu Project ID aca!!
