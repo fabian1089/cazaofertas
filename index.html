@@ -44,7 +44,7 @@
 		  //obtener coordenadas ==> estas por defecto: lat:3.374963638067219 , lon:-76.51804110565183
 		  var registrado=window.localStorage.getItem("consecutivo");
 		//alert('lat:'+window.localStorage.getItem("latitud")+" , lon:"+window.localStorage.getItem("longitud"));
-		//if(registrado==null){ window.location.href='index.html#registro';  }else{ window.location.href='index.html#busqueda'; }
+		if(registrado==null){ window.location.href='index.html#registro';  }else{ window.location.href='index.html#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
 	 }
@@ -69,6 +69,8 @@
 	
 	}
 	
+	
+		
 	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia){
 		
 		//consultar todo y pintarlo en detalle_oferta. 
@@ -83,7 +85,7 @@
 		tienda+="<p> "+tiendaDesc+" </p>";
 		tienda+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a>";
 		
-		var imagen_local="<img src='http://localhost/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
+		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="";
 		
 		document.getElementById('div_encabezado').innerHTML=encabezado;
@@ -92,7 +94,7 @@
 		document.getElementById('div_mapa').innerHTML=mapa;
 		document.getElementById('contenido_imagen').innerHTML=imagen_local;
 		
-		
+		window.localStorage.setItem('ofertaActual',id_oferta);
 		
 		
 		
@@ -124,7 +126,7 @@
 	
 	var palabra_clave=document.getElementById('palabra_clave').value;
 	var distancia=document.getElementById('distancia').value;
-	
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
 	var latitud=window.localStorage.getItem('latitud');
 	var longitud=window.localStorage.getItem('longitud');
 	
@@ -138,7 +140,7 @@
 	
 	
 	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=buscarOfertas&palabra="+palabra_clave+"&distancia="+distancia+"&categorias="+lista+"&latitud="+latitud+"&longitud="+longitud,
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=buscarOfertas&palabra="+palabra_clave+"&distancia="+distancia+"&categorias="+lista+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
 				contentType: "application/json",
 				//data:datos,	
 				type:'GET',
@@ -200,6 +202,40 @@
 				}
 			});
 	}
+	
+	
+	
+	
+	function sumarVisita(){
+
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+	var id_oferta=window.localStorage.getItem('ofertaActual');
+	var bloquear='N';
+	var check_bloquear=document.getElementById('bloquear');
+	if(check_bloquear.checked){
+	bloquear='S';
+	}
+		
+	$.ajax({
+	
+	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=sumarVisitaOferta&id_usuario="+id_usuario+"&id_oferta="+id_oferta+"&bloquear="+bloquear,
+				contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {	},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se guardó la visita');
+					
+				} 
+				
+	
+	});
+	
+	
+	}
+	
 	
 	
 	function listCategorias(){
@@ -269,7 +305,7 @@
 
 				
 				if(response['exito']=='exito'){
-					alert('Categorías guardadas!!'); //falta guardar en local y mostrar en la pantalla!!!
+					//alert('Categorías guardadas!!'); //falta guardar en local y mostrar en la pantalla!!!
 					document.location.href='index.html#busqueda';
 					}else{
 					alert('Por favor intentelo de nuevo');
@@ -311,7 +347,7 @@
 				dataType:'JSON',
 			  	success: function( response ) {				
 					if(response['exito']=='exito'){
-					alert('Registro exitoso!!');
+					//alert('Registro exitoso!!');
 					window.localStorage.setItem("consecutivoUsuario",response['id']);
 					document.location.href='index.html#categorias';
 					}else{
@@ -398,7 +434,7 @@
 
 
 	<div data-role="header" class="jqm-header">
-		<h2><img src="../_assets/img/jquery-logo.png" alt="jQuery Mobile"></h2>
+		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
 		
 	</div><!-- /header -->
 
@@ -504,7 +540,7 @@
 <div data-role="page" class="jqm-demos" id="busqueda">
 
 	<div data-role="header" class="jqm-header">
-		<h2><img src="../_assets/img/jquery-logo.png" alt="jQuery Mobile"></h2>
+		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
 		
 	</div><!-- /header -->
 
@@ -585,7 +621,7 @@
       <label for="bloquear">No volver a mostrar esta oferta en busquedas futuras</label>
     </fieldset>
   </div>
-<a href="#aja" data-role="button" data-rel="back">Volver</a>
+<a href="#" data-role="button" data-rel="back" onclick="sumarVisita();" >Volver</a>
   
   
   </div>
