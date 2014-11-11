@@ -42,7 +42,7 @@
 	 	  listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  //obtener coordenadas ==> estas por defecto: lat:3.374963638067219 , lon:-76.51804110565183
-		  var registrado=window.localStorage.getItem("consecutivo");
+		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		//alert('lat:'+window.localStorage.getItem("latitud")+" , lon:"+window.localStorage.getItem("longitud"));
 		if(registrado==null){ window.location.href='index.html#registro';  }else{ window.location.href='index.html#busqueda'; }
   
