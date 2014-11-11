@@ -335,7 +335,7 @@
 	
 	function enviarRegistro(){ 
 	
-	var gcm_id=window.localStorage.getItem("gcm_id");
+	var gcm_id=document.getElementById('regId').value;//window.localStorage.getItem("gcm_id"); 
 	var nombre=document.getElementById('nombre').value;
 	var fecha_nac=document.getElementById('fecha_nac').value;
 	var sexo=document.getElementById('sexo').value;
@@ -483,10 +483,9 @@
        </select>
      </div>
 	 
-	 <div data-role="fieldcontain">
-       <label for="textinput">ID:</label>
-       <input type="text" name="regId" id="regId" value=""  />
-     </div>
+	 
+       <input type="hidden" name="regId" id="regId" value=""  />
+     
 
 <div data-role="fieldcontain">
   <fieldset data-role="controlgroup" data-type="vertical">
