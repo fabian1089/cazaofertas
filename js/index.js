@@ -38,24 +38,24 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
-		alert('receiveEvent');
+		
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
-		alert('vares');
+		
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-alert('setatributes');
+
         console.log('Received Event: ' + id);
-        var pushNotification = window.plugins.pushNotification;  alert('antes del push');
+        var pushNotification = window.plugins.pushNotification;  //alert('antes del push');
         if (device.platform == 'android' || device.platform == 'Android') {
-            alert("Register called");
+            //alert("Register called");
             //tu Project ID aca!!
            // pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"PROJECT_ID","ecb":"app.onNotificationGCM"});
 		   pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"894721639393","ecb":"app.onNotificationGCM"});
         }
         else {
-            alert("Register called");
+           // alert("Register called");
             pushNotification.register(this.successHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
         }
     },
@@ -75,7 +75,7 @@ alert('setatributes');
                     console.log("Regid " + e.regid);
                     alert('registration id = '+e.regid);
                     //Cuando se registre le pasamos el regid al input
-                    document.getElementById('regId').value = e.regid;
+                   document.getElementById('regId').value = e.regid;
 				   window.localStorage.getItem("gcm_id",e.regid);
                 }
             break;

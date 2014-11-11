@@ -46,7 +46,7 @@
 	alert('error al obtener la geolocalización');
 	}
 	
-	/* document.addEventListener("deviceready", onDeviceReady, false);
+	 document.addEventListener("deviceready", onDeviceReady, false);
 	 function onDeviceReady() {
 	 	  listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
@@ -55,7 +55,7 @@
 		//	if(registrado==null){ window.location.href='#registro';  }else{ window.location.href='#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
-	 } */
+	 } 
 	 
 	 function obtenerCoordenadas(position){
 	 
@@ -451,8 +451,8 @@
 
 	<!-- nuevo -->
 	<div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+                <p class="event listening"></p>
+                <p class="event received"></p>
             </div>  
       
 	<!-- fin nuevo -->
