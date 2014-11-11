@@ -20,7 +20,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-		alert('aquì va');
+		
     },
     // Bind Event Listeners
     //
