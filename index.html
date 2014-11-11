@@ -349,7 +349,7 @@
 	if(nombre!='' && fecha_nac!='' && email!=''){ //validar todos los datos
 	
 	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=registro&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"gcm_id="+gcm_id,
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=registro&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"&gcm_id="+gcm_id,
 				contentType: "application/json",
 				data:datos,	
 				type:'GET',
