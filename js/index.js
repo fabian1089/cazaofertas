@@ -82,7 +82,7 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
-              alert('message = '+e.message+' msgcnt = '+e.msgcnt);
+              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.codigo_oferta);
 			  window.location.href="#map-page";
             break;
  
