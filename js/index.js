@@ -121,12 +121,8 @@ var app = {
 					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
 				}
-			}); 
-				
-			  
-			  
-			  
-			  window.location.href="#map-page";
+			}); 			  
+			  //window.location.href="#map-page";
 			  
             break;
  
