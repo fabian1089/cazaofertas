@@ -52,7 +52,7 @@
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		
-			if(registrado==null){ window.location.href='#registro';  } else{ window.location.href='#busqueda'; }
+			//if(registrado==null){ window.location.href='#registro';  } else{ window.location.href='#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
 	 } 
@@ -439,18 +439,18 @@
 </head>
 <body>
 
-<!-- pagina de bienvenida --> 
+<!-- pagina de bienvenida  
 <div data-role="page" class="jqm-demos" id="home">
 	<div data-role="header" class="jqm-header">
 		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
-	</div><!-- /header -->
+	</div>
 
     <div role="main" > Pàgina de Bienvenida ==> Aquì colocar logo  </div> 
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>Desarrollado por C&F Creations SAS </p>
 		<p>info@cf-creations.com</p>
-	</div><!-- /footer -->
+	</div>
 </div>
 <!-- fin pagina de bienvenida --> 
 
