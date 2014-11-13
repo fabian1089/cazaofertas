@@ -82,9 +82,9 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
-              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.prueba+' prueba2: '+e.data.prueba);
+              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.prueba);
 			  
-			  var codigo_oferta= e.message.split('');
+			 // var codigo_oferta= e.message.split('');
 			  
 
 			 
