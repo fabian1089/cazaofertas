@@ -52,7 +52,7 @@
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		
-		//	if(registrado==null){ window.location.href='#registro';  }else{ window.location.href='#busqueda'; }
+			if(registrado==null){ window.location.href='#registro';  } //else{ window.location.href='#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
 	 } 
@@ -438,6 +438,62 @@
 	</script>
 </head>
 <body>
+
+
+<!-- Busqueda -->
+<div data-role="page" class="jqm-demos" id="busqueda">
+
+	<div data-role="header" class="jqm-header">
+		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
+		
+	</div><!-- /header -->
+
+    <div role="main" > <!--lass="ui-content jqm-content" -->
+      <div data-role="fieldcontain">
+        <label for="textinput">Palabra clave:</label>
+        <input type="text" name="palabra_clave" id="palabra_clave" value="" placeholder="Separar con coma (,) si desea ingresar más de una palabra clave" />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="slider">Distancia máxima (km):</label>
+        <input type="range" name="distancia" id="distancia" value="10" min="1" max="200" />
+      </div>
+   
+   <!-- desde aqui -->
+   <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br" >
+		<label for="select-choice-9" class="select ui-select">Categorías:</label>
+		<div class="ui-select">
+        <select name="select-choice-9" id="categorias_buscar" multiple="multiple" data-native-menu="false" tabindex="-1">
+			
+			<!--<option>Categorías</option> listCategorias();
+			<option value="standard" selected>Standard: 7 day</option>
+			<option value="rush" selected>Rush: 3 days</option>
+			<option value="express" selected>Express: next day</option>
+			<option value="overnight" selected>Overnight</option>-->
+            		
+		</select></div>
+	</div>
+   <!-- hasta aqui -->
+   
+<br>
+	<a href="#" data-role="button" id="botonCategorias" onclick="buscarOfertas();">Buscar</a>
+	
+	
+</div><!-- /content -->
+	   
+
+
+	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
+		<p>Desarrollado por C&F Creations SAS </p>
+		<p>info@cf-creations.com</p>
+	</div><!-- /footer -->
+	
+	
+
+</div><!-- /page -->
+<!-- Fin Busqueda -->
+
+
+
 <!-- Registro -->
 <div data-role="page" class="jqm-demos" id="registro">
 
@@ -558,57 +614,8 @@
 <!-- Fin categorías -->
 
 
-<!-- Busqueda -->
-<div data-role="page" class="jqm-demos" id="busqueda">
-
-	<div data-role="header" class="jqm-header">
-		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
-		
-	</div><!-- /header -->
-
-    <div role="main" > <!--lass="ui-content jqm-content" -->
-      <div data-role="fieldcontain">
-        <label for="textinput">Palabra clave:</label>
-        <input type="text" name="palabra_clave" id="palabra_clave" value="" placeholder="Separar con coma (,) si desea ingresar más de una palabra clave" />
-      </div>
-      <div data-role="fieldcontain">
-        <label for="slider">Distancia máxima (km):</label>
-        <input type="range" name="distancia" id="distancia" value="10" min="1" max="200" />
-      </div>
-   
-   <!-- desde aqui -->
-   <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br" >
-		<label for="select-choice-9" class="select ui-select">Categorías:</label>
-		<div class="ui-select">
-        <select name="select-choice-9" id="categorias_buscar" multiple="multiple" data-native-menu="false" tabindex="-1">
-			
-			<!--<option>Categorías</option> listCategorias();
-			<option value="standard" selected>Standard: 7 day</option>
-			<option value="rush" selected>Rush: 3 days</option>
-			<option value="express" selected>Express: next day</option>
-			<option value="overnight" selected>Overnight</option>-->
-            		
-		</select></div>
-	</div>
-   <!-- hasta aqui -->
-   
-<br>
-	<a href="#" data-role="button" id="botonCategorias" onclick="buscarOfertas();">Buscar</a>
-	
-	
-</div><!-- /content -->
-	   
 
 
-	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
-		<p>Desarrollado por C&F Creations SAS </p>
-		<p>info@cf-creations.com</p>
-	</div><!-- /footer -->
-	
-	
-
-</div><!-- /page -->
-<!-- Fin Busqueda -->
 
 <!-- Detalle oferta -->
 <div data-role="page" id="detalle_oferta">
