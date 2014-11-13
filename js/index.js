@@ -65,7 +65,7 @@ var app = {
     },
     errorHandler:function(error) {
         alert(error);
-    },
+    }, // esta parte es para Android!!
     onNotificationGCM: function(e) {
         switch( e.event )
         {
@@ -82,9 +82,9 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
-              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.prueba);
+              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' titulo: '+e.title+' Prueba: '+e.data);
 			  
-			 // var codigo_oferta= e.message.split('');
+			  var codigo_oferta= e.message.split('');
 			  
 
 			 
@@ -108,7 +108,7 @@ var app = {
               alert('An unknown GCM event has occurred');
               break;
         }
-    },
+    },  // esta parte es para IOS!!!
     onNotificationAPN: function(event) {
         var pushNotification = window.plugins.pushNotification;
         alert("Running in JS - onNotificationAPN - Received a notification! " + event.alert);
