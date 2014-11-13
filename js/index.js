@@ -82,16 +82,46 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
-              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' titulo: '+e.title+' Prueba: '+e.data);
 			  
-			  var codigo_oferta= e.message.split('');
+			  var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+	          var latitud=window.localStorage.getItem('latitud');
+			  var longitud=window.localStorage.getItem('longitud');
+              var codigo_oferta= e.message.split('cod:');
 			  
-
-			 
-			 
-				//mostrarDetalles();
-				//(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia)
+			 alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
+			  
+				$.ajax({
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=ofertaPorId&codigo_oferta="+codigo_oferta[1]+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
+				contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {	
 				
+				var cont=0;
+					var id_tienda=response[cont]['id_tienda'];
+					var id_oferta=response[cont]['id_oferta'];
+					var titulo=response[cont]['titulo'];
+					var nombre=response[cont]['nombre'];
+					var descOferta=response[cont]['descOferta'];
+					var direccion=response[cont]['direccion'];
+					var tiendaDesc=response[cont]['tiendaDesc'];
+					var latitud=response[cont]['latitud'];
+					var longitud=response[cont]['longitud'];
+					var distancia=response[cont]['distancia'];
+					
+					mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia);
+				
+					
+				
+				},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se pudo realizar la acción. Por favor verifique su conexión a internet');
+					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			}); 
 				
 			  
 			  
