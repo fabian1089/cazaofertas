@@ -82,8 +82,22 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
-              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.codigo_oferta);
+              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.prueba+' prueba2: '+e.data.prueba);
+			  
+			  var codigo_oferta= e.message.split('');
+			  
+
+			 
+			 
+				//mostrarDetalles();
+				//(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia)
+				
+				
+			  
+			  
+			  
 			  window.location.href="#map-page";
+			  
             break;
  
             case 'error':
