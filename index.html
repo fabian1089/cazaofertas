@@ -410,10 +410,10 @@
 	
 	// prueba desde aquì
 	
-	$( document ).on( "pagecreate", "#home", function() {
+	$( document ).on( "pagecreate", "#home", function() { alert('prueba');
 	var registrado=window.localStorage.getItem("consecutivoUsuario");
 	if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; }
-  }
+  });
 	
 	// hasta aquì
 	
