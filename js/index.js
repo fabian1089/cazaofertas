@@ -65,7 +65,7 @@ var app = {
     },
     errorHandler:function(error) {
         alert(error);
-    }, // esta parte es para Android!!
+    },
     onNotificationGCM: function(e) {
         switch( e.event )
         {
@@ -82,13 +82,14 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
+             // alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.codigo_oferta);
 			  
-			  var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+			 var id_usuario=window.localStorage.getItem("consecutivoUsuario");
 	          var latitud=window.localStorage.getItem('latitud');
 			  var longitud=window.localStorage.getItem('longitud');
               var codigo_oferta= e.message.split('cod:');
 			  
-			 alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
+			   alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
 			  
 				$.ajax({
 			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=ofertaPorId&codigo_oferta="+codigo_oferta[1]+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
@@ -121,8 +122,7 @@ var app = {
 					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
 				}
-			}); 			  
-			  //window.location.href="#map-page";
+			}); 
 			  
             break;
  
@@ -134,7 +134,7 @@ var app = {
               alert('An unknown GCM event has occurred');
               break;
         }
-    },  // esta parte es para IOS!!!
+    },
     onNotificationAPN: function(event) {
         var pushNotification = window.plugins.pushNotification;
         alert("Running in JS - onNotificationAPN - Received a notification! " + event.alert);
