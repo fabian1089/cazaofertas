@@ -88,7 +88,11 @@
 			$('[data-marker-info]').each(function() {
 				try {
 					var pos = parseLatLng($(this).attr('data-marker-info'));
+					// Aquì agregar el numero del ícono!
+					var icono= 'http://www.soymedico.co/cazaofertas/imagenes/logos/'+($(this).attr('icono'))+'.png';
+					
 					data.push({ position: pos,
+						icon: icono,
 						title: $(this).find('.ui-gmap-marker-title').html(),
 						content: $(this).find('.ui-gmap-marker-info').andSelf().filter('.ui-gmap-marker-info').clone().get(0)
 					});
@@ -136,8 +140,9 @@
 			}
 
 			$.each(data, function(i) {
-				var icon = "http://maps.google.com/mapfiles/marker.png";
-				var marker = new google.maps.Marker({ map:map, position:this.position, title:this.title, icon:icon });
+				//var icon = "http://maps.google.com/mapfiles/marker.png";
+				//var icon="http://www.soymedico.co/cazaofertas/imagenes/logos/none.png";
+				var marker = new google.maps.Marker({ map:map, position:this.position, title:this.title, icon:this.icon });
 				var content = this.content;
 				if (content) {
 					google.maps.event.addListener(marker, 'click', (function(map, marker, content) { return function() {

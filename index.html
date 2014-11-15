@@ -52,9 +52,9 @@
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		
-			//if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; } probar con window.location
+			//if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; }
   
-		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! pero está sacando error, no carga*************************  
+		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
 	 } 
 	 
 	 function obtenerCoordenadas(position){
@@ -70,14 +70,11 @@
 	 
 	 }
 	
-	
 	function mostrarLocal(id_local){
 	
 	alert('Listar todas las ofertas del local '+id_local);
 	
 	}
-	
-	
 		
 	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia){
 		
@@ -129,8 +126,7 @@
 	return cadena;	
 	}
 		
-	
-	function buscarOfertas(){
+	function buscarOfertas(){ 
 	
 	var palabra_clave=document.getElementById('palabra_clave').value;
 	var distancia=document.getElementById('distancia').value;
@@ -176,10 +172,10 @@
 					var latitud=response[cont]['latitud'];
 					var longitud=response[cont]['longitud'];
 					var distancia=response[cont]['distancia'];
+					var icono=response[cont]['icono'];
 					
 					
-					
-					cadena+=" <li data-marker-info='"+latitud+","+longitud+"'>";
+					cadena+=" <li data-marker-info='"+latitud+","+longitud+"' icono='"+icono+"' >";
 								  //marker
 					cadena+="	  <div style='display:none;'> 					    <div class='ui-gmap-marker-info'> ";						
 					cadena+="	  	  <a id='gmap-marker-link'  data-rel='dialog' onclick='mostrarLocal(\""+id_tienda+"\");' ><h4>"+nombre+" <br> "+direccion+" </h4> </a>"; //título						
@@ -211,9 +207,6 @@
 			});
 	}
 	
-	
-	
-	
 	function sumarVisita(){
 
 	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
@@ -243,8 +236,6 @@
 	
 	
 	}
-	
-	
 	
 	function listCategorias(){
 	
@@ -287,8 +278,7 @@
 			});
 	
 	}
-	
-	
+		
 	function guardarcategorias() {
 	
 	var cantidad=window.localStorage.getItem("cantCateg");
@@ -576,9 +566,6 @@
 </div>
 <!-- Fin categorías -->
 
-
-
-
 <!-- Busqueda -->
 <div data-role="page" class="jqm-demos" id="busqueda">
 
@@ -630,8 +617,6 @@
 
 </div><!-- /page -->
 <!-- Fin Busqueda -->
-
-
 
 <!-- Detalle oferta -->
 <div data-role="page" id="detalle_oferta">

@@ -111,6 +111,7 @@ var app = {
 					var longitud=response[cont]['longitud'];
 					var distancia=response[cont]['distancia'];
 					
+					
 					mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia);
 				
 					
