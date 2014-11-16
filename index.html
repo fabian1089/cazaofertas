@@ -4,7 +4,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>CazaOfertas</title>
-	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css">
+	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css"> 
+	
 	<style>
 	.segmented-control { text-align:center; }
 	.segmented-control .ui-controlgroup { display:inline; margin:.2em 0px; }
@@ -72,7 +73,71 @@
 	
 	function mostrarLocal(id_local){
 	
-	alert('Listar todas las ofertas del local '+id_local);
+	//alert('Listar todas las ofertas del local '+id_local);
+	var latitud=window.localStorage.getItem('latitud');
+	var longitud=window.localStorage.getItem('longitud');
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+	
+	$.ajax({
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=ofertasLocal&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario+"&id_local="+id_local,
+				contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {
+				
+				var id_tienda=response[0]['id_tienda'];
+				var nombre=response[0]['nombre'];
+				var direccion=response[0]['direccion'];
+				var tiendaDesc=response[0]['tiendaDesc'];
+				var distancia=response[0]['distancia'];
+				
+				var cadena="<div align='center'> <h3>"+nombre+"</h3> "+direccion+" ("+distancia+" kms) <br><br> "+tiendaDesc+" <br> ";
+			
+					cadena+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a> </div>";
+		
+		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
+		document.getElementById('contenido_imagen').innerHTML=imagen_local;
+			
+				 cadena+=" <div data-role='collapsible-set' id='listado_local'> ";
+						
+				for(var cont=0;cont<response.length;cont++){
+				
+					
+					//var id_oferta=response[cont]['id_oferta'];
+					var titulo=response[cont]['titulo'];
+					var descOferta=response[cont]['descOferta'];
+					var latitud=response[cont]['latitud'];
+					var longitud=response[cont]['longitud'];
+					// agregar tambien el còmo llegar!
+			
+			// aqui el for
+				cadena+=" <div data-role='collapsible' data-collapsed='true'> ";
+				cadena+=" <h3>"+titulo+"</h3> ";
+				cadena+=" <p>"+descOferta+"</p >";
+				cadena+="	  </div>"
+	  //fin del for
+      
+	 			 cadena+="</div> ";
+				
+				}
+				
+				cadena+="<div align='center'> <a  data-role='button' data-rel='back' data-icon='arrow-l'>Volver</a> </div>";
+				
+				document.getElementById('contenido_local').innerHTML=cadena;
+				//$("#listado_local").listview("refresh");
+				$('#contenido_local').trigger("create");
+				document.location.href="#local_detalle";
+				
+				},
+				//timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se pudo realizar la acción. Por favor verifique su conexión a internet');
+					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			});				
+	
 	
 	}
 		
@@ -88,7 +153,7 @@
 		var tienda="<h3>"+nombre+"</h3>";
 		tienda+="<h5> "+direccion+" ("+distancia+" kms)</h5>";
 		tienda+="<p> "+tiendaDesc+" </p>";
-		tienda+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a>";
+		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a>";
 		
 		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="";
@@ -98,6 +163,8 @@
 		document.getElementById('div_tienda').innerHTML=tienda;
 		document.getElementById('div_mapa').innerHTML=mapa;
 		document.getElementById('contenido_imagen').innerHTML=imagen_local;
+		
+		$('#detalle_oferta').trigger("create");
 		
 		window.localStorage.setItem('ofertaActual',id_oferta);
 		
@@ -112,11 +179,10 @@
 		*/
 		}
 		
-		
 	// Método recursivo para colocar varias ofertas en un mismo marker
 	function listaOfertas(cadena,pos,response){
 	
-	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\");'> <strong> "+response[pos]['titulo']+": </strong> <br> "+response[pos]['descOferta']+" <br> </p>"
+	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\");'> <strong> "+response[pos]['titulo']+": </strong> <br> "+(response[pos]['descOferta']).substring(0, 40)+"...(leer más) <br> </p>"
 	
 		if(pos>0){	
 			if(response[pos]['id_tienda']==response[pos-1]['id_tienda']){		
@@ -196,9 +262,9 @@
 
 					document.getElementById("list-results").innerHTML =cadena;
 					document.location.href="index.html#map-page";
-											
+						$("#list-results").listview("refresh");					
 					},
-				timeout: 6000,  // Timeout after 6 seconds
+				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
 				alert('No se pudo realizar la acción. Por favor verifique su conexión a internet');
 					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
@@ -225,7 +291,7 @@
 				type:'GET',
 				dataType:'JSON',
 			  	success: function( response ) {	},
-				timeout: 6000,  // Timeout after 6 seconds
+				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
 				alert('No se guardó la visita');
 					
@@ -269,7 +335,7 @@
 					window.localStorage.setItem("categorias",lista);
 											
 					},
-				timeout: 6000,  // Timeout after 6 seconds
+				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
 				alert('No se completó el registro. Por favor verifique su conexión a internet');
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
@@ -310,7 +376,7 @@
 					}
 				
 				},
-				timeout: 6000,  // Timeout after 6 seconds
+				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
 				alert('No se completó el registro. Por favor verifique su conexión a internet');
 					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
@@ -354,7 +420,7 @@
 					}
 						
 			  	},
-				timeout: 6000,  // Timeout after 6 seconds
+				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
 				alert('No se completó el registro. Por favor verifique su conexión a internet');
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
@@ -395,10 +461,7 @@
 	    	e.preventDefault();
 	    });
 	});
-
-	
-	
-	
+		
 	/**
 	 * Geolocation configuration
 	 */
@@ -420,7 +483,7 @@
 					$listResults.listview( "refresh" );
 					$.mobile.loading( 'hide' );
 			  	},
-				timeout: 6000,  // Timeout after 6 seconds
+				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
@@ -456,6 +519,7 @@
 		
 	</div><!-- /header -->
 
+
     <div role="main" > <!--lass="ui-content jqm-content" -->
 
 	<!-- nuevo -->
@@ -468,9 +532,9 @@
 	
 	
 <div align="center" style="height:90%;">
-	 <h3 align="center">Bienvenido a Cazaofertas</h3>
+	<!-- <h3 align="center">Bienvenido a Cazaofertas</h3>
      <span style="font-size:12px;"> Los siguientes datos son usados para que el usuario pueda participar en las <strong>rifas periódicas</strong> que realizan nuestros patrocinadores y para recibir información sobre <strong>"Super ofertas"</strong>. <br/> Si usted no desea participar, puede omitir este paso.  </span>
-   
+   -->
    <form action="index.html#config" method="post"> 
      <div data-role="fieldcontain">
        <label for="textinput">Nombre:</label>
@@ -601,7 +665,7 @@
    <!-- hasta aqui -->
    
 <br>
-	<a href="#" data-role="button" id="botonCategorias" onclick="buscarOfertas();">Buscar</a>
+	<a href="#" data-role="button" id="botonCategorias"   data-icon="search" onclick="buscarOfertas();">Buscar</a>
 	
 	
 </div><!-- /content -->
@@ -651,7 +715,7 @@
       <label for="bloquear">No volver a mostrar esta oferta en busquedas futuras</label>
     </fieldset>
   </div>
-<a href="#" data-role="button" data-rel="back" onclick="sumarVisita();" >Volver</a>
+<a href="#" data-role="button" data-icon="arrow-l" data-rel="back" onclick="sumarVisita();" >Volver</a>
   
   
   </div>
@@ -669,6 +733,18 @@
 </div>
 <!-- Fin Imagenes -->
 
+<!-- detalle local -->
+<div data-role="page" id="local_detalle">
+  <div data-role="header">
+    <h1>Encabezado</h1>
+  </div>
+  
+  <div data-role="content" id="contenido_local">
+    
+  
+  </div>
+</div>
+<!-- detalle local -->
 
 <!-- Mapa -->
 	<div data-role="page" id="map-page">
@@ -704,7 +780,11 @@
 	            	
 					<!-- <li id="show-more"><a href=""><h1>Show more</h1></a></li> -->
 				</ul>
-			</div>
+			<br> <br>
+			<a href="#" data-role="button" data-icon="arrow-l" data-rel="back" >Volver</a>
+			
+			</div>			
+			
 		</div>
 		<div role="main" class="ui-content" id="map-canvas" data-initial-view="-76.518,3.374,10" style="display:none;"></div>
 	<!-- Load map assets at bottom for performance    3.374963638067219 , lon:-76.51804110565183-->
