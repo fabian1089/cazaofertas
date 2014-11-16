@@ -89,7 +89,7 @@ var app = {
 			  var longitud=window.localStorage.getItem('longitud');
               var codigo_oferta= e.message.split('cod:');
 			  
-			   alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
+			   //alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
 			  
 				$.ajax({
 			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=ofertaPorId&codigo_oferta="+codigo_oferta[1]+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
