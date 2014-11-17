@@ -4,8 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>CazaOfertas</title>
-	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css"> 
-	
+	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.4.3.min.css"> 	
 	<style>
 	.segmented-control { text-align:center; }
 	.segmented-control .ui-controlgroup { display:inline; margin:.2em 0px; }
@@ -23,6 +22,31 @@
 	.ui-li-has-count .ui-li-count { border-color:transparent; }
 	.wrap { white-space:normal; }
 	</style>
+	<style>
+			#abre_panel{
+				position: absolute;
+				background-image: url(img/menu_btn.png);
+				background-repeat: no-repeat;
+				width: 50px;
+				height: 20px;
+				box-shadow: none;
+				background-color: transparent !important;
+				border: none;
+				left: -5px;
+				top: 0;
+				margin-top: 6px !important;
+			}
+			.header{
+				color: white !important;
+				background-color:#CCC !important; 
+				text-shadow:none !important;
+			}
+			#panel, .panel_li{
+				background-color: grey !important;
+				text-shadow:none !important;
+				color: white !important;
+			}
+		</style>
 	<link rel="stylesheet" href="_assets/css/jqm-demos.css">
 	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
@@ -52,7 +76,7 @@
 	 	  listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
-		
+		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
 			//if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
@@ -508,13 +532,27 @@
 <!-- fin pagina de bienvenida --> 
 
 <!-- Registro -->
-<div data-role="page" class="jqm-demos" id="registro">
+<div data-role="page" class="jqm-demos" id="registro" >
 
 
-	<div data-role="header" class="jqm-header">
+<div data-role="header" class="header" data-position="fixed">
+		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<a href="#panel" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+	</div>
+
+	<div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
+		<ul data-role="listview">
+			<li data-icon="search"><a href="#" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
+		</ul>
+	</div>
+
+	
+	<!--<div data-role="header" class="jqm-header" >
 		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
 		
-	</div><!-- /header -->
+	</div> /header -->
 
 
     <div role="main" > <!--lass="ui-content jqm-content" -->
@@ -566,7 +604,7 @@
 
 <input type="submit" value="Enviar" id="enviarDatos" onclick="enviarRegistro();" data-role="button" data-inline="true"/>
 
-<a href="index.html#busqueda" data-role="button" data-inline="true" data-transition="slide">Omitir</a>
+<a href="index.html#busqueda" data-role="button" data-inline="true" data-transition="slide" >Omitir</a>
 <br>
 	</form>
      </div>
