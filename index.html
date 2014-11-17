@@ -77,6 +77,25 @@
 			
 			
 		</style>
+	<style>
+	
+	.video {
+   position: relative;
+   padding-bottom: 56.25%;
+   overflow: hidden;
+			}
+			
+	.video iframe
+	{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+	}
+
+
+	</style>
 	<link rel="stylesheet" href="_assets/css/jqm-demos.css">
 	<link rel="shortcut icon" href="favicon.ico">
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
@@ -201,6 +220,9 @@
 		//incluir: fotos de la oferta, de la tienda, mapa de còmo llegar
 		//hacerlo como pop up o como página?
 		
+		var lat= window.localStorage.getItem('latitud');
+	 	var lon= window.localStorage.getItem('longitud');
+		
 		var titulo_detalle="<h3>"+titulo+"</h3>";		
 		var oferta=descOferta;
 		
@@ -210,7 +232,9 @@
 		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a>";
 		
 		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
-		var mapa="";
+		var mapa="<div class='video'>";
+		mapa+=" <iframe width='640' height='360' src='http://www.soymedico.co/cazaofertas/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div>";
+
 		
 		document.getElementById('titulo_detalle').innerHTML=titulo_detalle;
 		document.getElementById('div_oferta').innerHTML=oferta;
