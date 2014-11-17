@@ -23,7 +23,7 @@
 	.wrap { white-space:normal; }
 	</style>
 	<style>
-			#abre_panel{
+	.panel-btn{
 				position: absolute;
 				background-image: url(img/menu_btn.png);
 				background-repeat: no-repeat;
@@ -36,16 +36,46 @@
 				top: 0;
 				margin-top: 6px !important;
 			}
-			.header{
+			
+	.header{
 				color: white !important;
 				background-color:#CCC !important; 
 				text-shadow:none !important;
 			}
-			#panel, .panel_li{
+			
+	#panel, .panel_li{
 				background-color: grey !important;
 				text-shadow:none !important;
 				color: white !important;
-			}
+			}  
+	#panel2, .panel_li{
+				background-color: grey !important;
+				text-shadow:none !important;
+				color: white !important;
+			}  
+#panel3, .panel_li{
+				background-color: grey !important;
+				text-shadow:none !important;
+				color: white !important;
+			}  
+#panel4, .panel_li{
+				background-color: grey !important;
+				text-shadow:none !important;
+				color: white !important;
+			}  
+#panel5, .panel_li{
+				background-color: grey !important;
+				text-shadow:none !important;
+				color: white !important;
+			}  
+#panel6, .panel_li{
+				background-color: grey !important;
+				text-shadow:none !important;
+				color: white !important;
+			}  			
+			
+			
+			
 		</style>
 	<link rel="stylesheet" href="_assets/css/jqm-demos.css">
 	<link rel="shortcut icon" href="favicon.ico">
@@ -63,8 +93,7 @@
         <script type="text/javascript"> 
         //El registro al servicio de google lo hacemos automáticamente
         app.initialize(); </script>
-	
-	
+		
 	<script>	
 	
 	function errorpos(){
@@ -77,7 +106,8 @@
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
-			//if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; }
+		
+		//if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
 	 } 
@@ -171,7 +201,7 @@
 		//incluir: fotos de la oferta, de la tienda, mapa de còmo llegar
 		//hacerlo como pop up o como página?
 		
-		var encabezado="<h1>"+titulo+"</h1>";		
+		var titulo_detalle="<h3>"+titulo+"</h3>";		
 		var oferta=descOferta;
 		
 		var tienda="<h3>"+nombre+"</h3>";
@@ -182,7 +212,7 @@
 		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="";
 		
-		document.getElementById('div_encabezado').innerHTML=encabezado;
+		document.getElementById('titulo_detalle').innerHTML=titulo_detalle;
 		document.getElementById('div_oferta').innerHTML=oferta;
 		document.getElementById('div_tienda').innerHTML=tienda;
 		document.getElementById('div_mapa').innerHTML=mapa;
@@ -534,7 +564,6 @@
 <!-- Registro -->
 <div data-role="page" class="jqm-demos" id="registro" >
 
-
 <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
@@ -542,18 +571,11 @@
 
 	<div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
-			<li data-icon="search"><a href="#" class="panel_li"	>Busqueda</a></li>
-			<li data-icon="gear"><a href="#" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
 	</div>
-
-	
-	<!--<div data-role="header" class="jqm-header" >
-		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
-		
-	</div> /header -->
-
 
     <div role="main" > <!--lass="ui-content jqm-content" -->
 
@@ -609,21 +631,27 @@
 	</form>
      </div>
 
-
-     <!--  <a href="#map-page" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini ui-icon-arrow-r ui-btn-icon-right">Open demo</a>
--->
-
 	</div><!-- /content -->
-	   
-
+	
 </div><!-- /page -->
 <!-- Fin Registro -->
 
 <!-- Categorias -->
 <div data-role="page" id="categorias" class="jqm-demos">
-  <div data-role="header">
-    <h1>Encabezado</h1>
-  </div>
+  
+  <div data-role="header" class="header" data-position="fixed">
+		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<a href="#panel2" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+	</div>
+
+	<div data-role="panel" id="panel2" data-position-fixed="true" data-position="left" data-display="overlay">
+		<ul data-role="listview">
+			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
+		</ul>
+	</div>
+	
   <div data-role="content" align="center">
   
   <span> Selecciona las categorías de las cuales quieres recibir <strong>Super ofertas</strong> </span>
@@ -658,10 +686,20 @@
 <!-- Busqueda -->
 <div data-role="page" class="jqm-demos" id="busqueda">
 
-	<div data-role="header" class="jqm-header">
-		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
-		
-	</div><!-- /header -->
+
+<div data-role="header" class="header" data-position="fixed">
+		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<a href="#panel3" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+	</div>
+
+	<div data-role="panel" id="panel3" data-position-fixed="true" data-position="left" data-display="overlay">
+		<ul data-role="listview">
+			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
+		</ul>
+	</div>
+
 
     <div role="main" > <!--lass="ui-content jqm-content" -->
       <div data-role="fieldcontain">
@@ -702,10 +740,23 @@
 
 <!-- Detalle oferta -->
 <div data-role="page" id="detalle_oferta">
-  <div data-role="header" id="div_encabezado">
-    
-  </div>
+  
+  <div data-role="header" class="header" data-position="fixed">
+		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<a href="#panel5" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+	</div>
+
+	<div data-role="panel" id="panel5" data-position-fixed="true" data-position="left" data-display="overlay">
+		<ul data-role="listview">
+			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
+		</ul>
+	</div>
+  
   <div data-role="content" id="contenido_oferta">
+  
+  <div align="center" id="titulo_detalle"> </div>
   
   <div data-role="tabs" id="tabs"> 
   <div data-role="navbar">
@@ -753,9 +804,20 @@
 
 <!-- detalle local -->
 <div data-role="page" id="local_detalle">
-  <div data-role="header">
-    <h1>Encabezado</h1>
-  </div>
+  
+  <div data-role="header" class="header" data-position="fixed">
+		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<a href="#panel4" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+	</div>
+
+	<div data-role="panel" id="panel4" data-position-fixed="true" data-position="left" data-display="overlay">
+		<ul data-role="listview">
+			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
+		</ul>
+	</div>
+  
   
   <div data-role="content" id="contenido_local">
     
@@ -766,8 +828,11 @@
 
 <!-- Mapa -->
 	<div data-role="page" id="map-page">
-		<div data-role="header" data-position="fixed">
-			<div class="segmented-control ui-bar-d">
+		
+		
+		<div data-role="header" class="header" data-position="fixed">
+		
+		<div class="segmented-control ui-bar-d">
 		 	<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 	  			<input type="radio" name="switch" id="list-switch" checked="true">
 				<label for="list-switch">Lista</label>
@@ -775,28 +840,22 @@
 	         	<label for="map-switch">Mapa</label>
 		    </fieldset>
 			</div>
-		</div>
+		
+		<a href="#panel6" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+	</div>
+
+	<div data-role="panel" id="panel6" data-position-fixed="true" data-position="left" data-display="overlay">
+		<ul data-role="listview">
+			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
+		</ul>
+	</div>		
+		
 		<div role="main" class="ui-content ui-content-list">
 	        <div id="list-canvas">
 	            <ul id="list-results" data-role="listview">
-	            
-				<!--	<li data-marker-info="44.811805,-93.176352">
-					  <div style="display:none;">
-					    <div class="ui-gmap-marker-info">
-					  	  <h1><a id="gmap-marker-link" href="#">Fast Clinic</a></h1>
-					  	  <p>8888 Fast Rd</p>
-					  	</div>
-					  </div>
-	            	  <a href="#">
-	            	  	<h1 class="ui-gmap-marker-title wrap">Fast Clinic</h1>
-	            	  	<div class="ui-li-count">
-	            	  		<span>0.71 miles</span>
-	            	  	</div>
-	            	  </a>
-	            	</li> -->
-	            	
-	            	
-					<!-- <li id="show-more"><a href=""><h1>Show more</h1></a></li> -->
+	            				
 				</ul>
 			<br> <br>
 			<a href="#" data-role="button" data-icon="arrow-l" data-rel="back" >Volver</a>
