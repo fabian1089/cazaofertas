@@ -82,9 +82,7 @@
 	.video {
    position: relative;
    padding-bottom: 56.25%;
-  
-   overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
+   overflow: hidden;
 			}
 			
 	.video iframe
@@ -784,7 +782,7 @@
   
   <div align="center" id="titulo_detalle"> </div>
   
-  <div data-role="tabs" id="tabs"> 
+  <div data-role="tabs" id="tabs" style="width:95%"> 
   <div data-role="navbar">
     <ul>
       <li><a href="#div_oferta" data-ajax="false">La Oferta</a></li>
