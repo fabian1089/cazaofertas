@@ -172,6 +172,7 @@
 		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		document.getElementById('contenido_imagen').innerHTML=imagen_local;
 			
+					
 				 cadena+=" <div data-role='collapsible-set' id='listado_local'> ";
 						
 				for(var cont=0;cont<response.length;cont++){
@@ -180,8 +181,7 @@
 					//var id_oferta=response[cont]['id_oferta'];
 					var titulo=response[cont]['titulo'];
 					var descOferta=response[cont]['descOferta'];
-					var latitud=response[cont]['latitud'];
-					var longitud=response[cont]['longitud'];
+					
 					// agregar tambien el còmo llegar!
 			
 			// aqui el for
@@ -191,9 +191,17 @@
 				cadena+="	  </div>"
 	  //fin del for
       
-	 			 cadena+="</div> ";
-				
+	 			 cadena+="</div> ";				
 				}
+				
+		var lat= window.localStorage.getItem('latitud');
+	 	var lon= window.localStorage.getItem('longitud');
+		var latitud=response[0]['latitud'];
+		var longitud=response[0]['longitud'];		
+		cadena+=" <div style='width:95%'> <div class='video'>";
+		cadena+=" <iframe width='640' height='360' src='http://www.soymedico.co/cazaofertas/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div> </div>";
+
+				
 				
 				cadena+="<div align='center'> <a  data-role='button' data-rel='back' data-icon='arrow-l'>Volver</a> </div>";
 				
@@ -768,6 +776,7 @@
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel5" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+		<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext"  data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Volver"></a>
 	</div>
 
 	<div data-role="panel" id="panel5" data-position-fixed="true" data-position="left" data-display="overlay">
@@ -832,6 +841,7 @@
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel4" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+		<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext"  data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Volver"></a>
 	</div>
 
 	<div data-role="panel" id="panel4" data-position-fixed="true" data-position="left" data-display="overlay">
@@ -866,6 +876,7 @@
 			</div>
 		
 		<a href="#panel6" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
+		<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext"  data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Volver"></a>
 	</div>
 
 	<div data-role="panel" id="panel6" data-position-fixed="true" data-position="left" data-display="overlay">
