@@ -36,12 +36,19 @@
 				top: 0;
 				margin-top: 6px !important;
 			}
-			
+		
 	.header{
-				color: white !important;
-				background-color:#CCC !important; 
+			color: white !important;
+			background-color:#FFC !important; 
+			text-shadow:none !important;
+		}
+		
+	.page{
+				color: black !important;
+				background-color:#FFC !important; 
 				text-shadow:none !important;
-			}
+		}		
+	
 			
 	#panel, .panel_li{
 				background-color: grey !important;
@@ -593,8 +600,9 @@
 </div>
 <!-- fin pagina de bienvenida --> 
 
-<!-- Registro -->
-<div data-role="page" class="jqm-demos" id="registro" >
+<!-- Registro 
+<div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
+<div data-role="page"  id="registro" class="page" >
 
 <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -669,7 +677,7 @@
 <!-- Fin Registro -->
 
 <!-- Categorias -->
-<div data-role="page" id="categorias" class="jqm-demos">
+<div data-role="page" id="categorias" class="page">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -716,7 +724,7 @@
 <!-- Fin categorías -->
 
 <!-- Busqueda -->
-<div data-role="page" class="jqm-demos" id="busqueda">
+<div data-role="page" class="page" id="busqueda">
 
 
 <div data-role="header" class="header" data-position="fixed">
@@ -740,7 +748,7 @@
       </div>
       <div data-role="fieldcontain">
         <label for="slider">Distancia máxima (km):</label>
-        <input type="range" name="distancia" id="distancia" value="10" min="1" max="200" />
+        <input type="range" name="distancia" id="distancia" value="5" min="1" max="50" />
       </div>
    
    <!-- desde aqui -->
@@ -771,7 +779,7 @@
 <!-- Fin Busqueda -->
 
 <!-- Detalle oferta -->
-<div data-role="page" id="detalle_oferta">
+<div data-role="page" id="detalle_oferta" class="page">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -836,7 +844,7 @@
 <!-- Fin Imagenes -->
 
 <!-- detalle local -->
-<div data-role="page" id="local_detalle">
+<div data-role="page" id="local_detalle" class="page">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -861,7 +869,7 @@
 <!-- detalle local -->
 
 <!-- Mapa -->
-	<div data-role="page" id="map-page">
+	<div data-role="page" id="map-page" class="page">
 		
 		
 		<div data-role="header" class="header" data-position="fixed">
