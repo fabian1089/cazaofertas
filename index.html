@@ -234,10 +234,10 @@
 		var titulo_detalle="<h3>"+titulo+"</h3>";		
 		var oferta=descOferta;
 		
-		var tienda="<h3>"+nombre+"</h3>";
+		var tienda="<div align='center'> <a onclick='mostrarLocal("+id_tienda+");'> <h3>"+nombre+"</h3> </a>";
 		tienda+="<h5> "+direccion+" ("+distancia+" kms)</h5>";
 		tienda+="<p> "+tiendaDesc+" </p>";
-		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a>";
+		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
 		
 		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="<div class='video'>";
