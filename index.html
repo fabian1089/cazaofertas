@@ -38,28 +38,10 @@
 			}
 			
 	.header{
-
-			color: white !important;
-			background-color:#C28A61 !important; 
-			text-shadow:none !important;
-		}
-		
-	.page{
-				color: black !important;
-				background-color:#FFC !important; 
-				text-shadow:none !important;
-		}	
-		
-	/*.item_lista{
-		background-color:white !important;
-		} */		
-		
-
 				color: white !important;
 				background-color:#CCC !important; 
 				text-shadow:none !important;
 			}
-
 			
 	#panel, .panel_li{
 				background-color: grey !important;
@@ -137,19 +119,18 @@
 	alert('error al obtener la geolocalización');
 	}
 	
-	 document.addEventListener("deviceready", cargarTodo, false);
-	 
-	function cargarTodo(){
-		 listCategorias();
+	 document.addEventListener("deviceready", onDeviceReady, false);
+	 function onDeviceReady() {
+	 	  listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
-	
-		//if(registrado==null){ listCategorias2();  window.location.href='#registro';  } else{ listCategorias2();  window.location.href='#busqueda'; }
-	}
-	
-	
-	
+		
+		//if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; }
+  
+		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
+	 } 
+	 
 	 function obtenerCoordenadas(position){
 	 
 	 var latitud=position.coords.latitude;
@@ -204,7 +185,7 @@
 					// agregar tambien el còmo llegar!
 			
 			// aqui el for
-				cadena+=" <div  data-role='collapsible' data-collapsed='true'> ";
+				cadena+=" <div data-role='collapsible' data-collapsed='true'> ";
 				cadena+=" <h3>"+titulo+"</h3> ";
 				cadena+=" <p>"+descOferta+"</p >";
 				cadena+="	  </div>"
@@ -253,10 +234,10 @@
 		var titulo_detalle="<h3>"+titulo+"</h3>";		
 		var oferta=descOferta;
 		
-		var tienda="<div align='center'> <a onclick='mostrarLocal("+id_tienda+");'> <h3>"+nombre+"</h3> </a>";
+		var tienda="<h3>"+nombre+"</h3>";
 		tienda+="<h5> "+direccion+" ("+distancia+" kms)</h5>";
 		tienda+="<p> "+tiendaDesc+" </p>";
-		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
+		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a>";
 		
 		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="<div class='video'>";
@@ -356,7 +337,7 @@
 					
 					cadena+="	  	</div>					  </div>";
 								  //lista
-					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
+					cadena+="      	  <a href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
 					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
 					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
@@ -421,26 +402,15 @@
 					var lista=new Array();
 					var cadena="";
 					var cadena2="<option>Categorías</option>";
-					
-					var listaCategorias="";
-					if(window.localStorage.getItem("listaCategorias")!=null){listaCategorias=window.localStorage.getItem("listaCategorias");};
-					
 					for(var cont=0;cont<response.length;cont++){
 					var categ=[response[cont]['id'], response[cont]['nombre'], response[cont]['descripcion']];
 					
 					lista[cont]=categ;
-					//alert(lista[cont][1]);
-					if((listaCategorias.indexOf(","+lista[cont][0]))>-1){
-					
+					//alert(lista[cont][1]);					
 					cadena+="<input type='checkbox' name='check_categorias' id='categoria_"+cont+"' checked='checked' class='custom' value='"+lista[cont][0]+"'  >  ";		
-					cadena2+="<option value='"+lista[cont][0]+"' selected='selected'> "+lista[cont][1]+" </option>";
-					}else{
-					cadena+="<input type='checkbox' name='check_categorias' id='categoria_"+cont+"' class='custom' value='"+lista[cont][0]+"'  >  ";		
-					cadena2+="<option value='"+lista[cont][0]+"' > "+lista[cont][1]+" </option>";
-					}
 					cadena+="<label for='categoria_"+cont+"'>"+lista[cont][1]+"</label>";
 					
-					
+					cadena2+="<option value='"+lista[cont][0]+"' selected='selected'> "+lista[cont][1]+" </option>";
 					
 					}	
 					
@@ -449,61 +419,17 @@
 							
 					window.localStorage.setItem("cantCateg",cont);
 					window.localStorage.setItem("categorias",lista);
-									
-					},
-				//timeout: 6000,  // Timeout after 6 seconds
-				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se cargaron las categorías. Por favor verifique su conexión a internet');
-				//	console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
-					//$.mobile.loading( "hide" );
-				}
-			});
-	
-	}
-	
-	function listCategorias2(){
-	
-	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=categorias",
-				contentType: "application/json",
-				//data:datos,	
-				type:'GET',
-				dataType:'JSON',
-			  	success: function( response ) {				
-					
-					var lista=new Array();
-					var cadena2="<option>Categorías</option>";
-					
-					var listaCategorias="";
-					if(window.localStorage.getItem("listaCategorias")!=null){listaCategorias=window.localStorage.getItem("listaCategorias");};
-					
-					for(var cont=0;cont<response.length;cont++){
-					var categ=[response[cont]['id'], response[cont]['nombre'], response[cont]['descripcion']];
-					
-					lista[cont]=categ;
-					if((listaCategorias.indexOf(","+lista[cont][0]))>-1){				
-					cadena2+="<option value='"+lista[cont][0]+"' selected='selected'> "+lista[cont][1]+" </option>";
-					}else{
-					cadena2+="<option value='"+lista[cont][0]+"' > "+lista[cont][1]+" </option>";
-					}
-										
-					}	
-										
-					document.getElementById("categorias_buscar").innerHTML =cadena2;
 											
-				$('#categorias_buscar').selectmenu('refresh', true);
-															
 					},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se cargaron las categorías (2). Por favor verifique su conexión a internet');
-				//	console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
-					//$.mobile.loading( "hide" );
+				alert('No se completó el registro. Por favor verifique su conexión a internet');
+					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
 				}
 			});
 	
 	}
-	
 		
 	function guardarcategorias() {
 	
@@ -515,8 +441,9 @@
 		cadena+=","+categoria.value;
 		}
 	}
-	window.localStorage.setItem("listaCategorias",cadena);
-	listCategorias2();
+	
+	//alert(cadena);
+	
 	$.ajax({
 	
 	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=guardarCategorias&categorias="+cadena,
@@ -529,7 +456,6 @@
 				
 				if(response['exito']=='exito'){
 					//alert('Categorías guardadas!!'); //falta guardar en local y mostrar en la pantalla!!!
-					
 					document.location.href='index.html#busqueda';
 					}else{
 					alert('Por favor intentelo de nuevo');
@@ -538,7 +464,7 @@
 				},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se guardaron las categorías. Por favor verifique su conexión a internet');
+				alert('No se completó el registro. Por favor verifique su conexión a internet');
 					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					//$.mobile.loading( "hide" );
 				}
@@ -582,7 +508,7 @@
 			  	},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se completó el registro de los datos. Por favor verifique su conexión a internet');
+				alert('No se completó el registro. Por favor verifique su conexión a internet');
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
 				}
@@ -591,7 +517,7 @@
 	}
 	
 	}
-			
+	
 	$( document ).on( "pagecreate", "#map-page", function() {
 		var $mapSwitch = $( "#map-switch" ),
 		    $listSwitch = $( "#list-switch" ),
@@ -661,20 +587,14 @@
 		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
 	</div>
 
-    <div role="main" > <div align='center'> <img src="login_logo.jpg" alt="CazaOfertas">  </div> </div>
+    <div role="main" > Pàgina de Bienvenida ==> Aquì colocar logo  </div> 
 
 	
-</div>--> 
+</div>
 <!-- fin pagina de bienvenida --> 
-
-
-<!-- Registro --> 
-<div data-role="page"  id="registro" class="page" >
-<!-- <div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
 
 <!-- Registro -->
 <div data-role="page" class="jqm-demos" id="registro" >
-
 
 <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -824,7 +744,7 @@
       </div>
    
    <!-- desde aqui -->
-   <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br" id="categorias_buscar_cont">
+   <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br" >
 		<label for="select-choice-9" class="select ui-select">Categorías:</label>
 		<div class="ui-select">
         <select name="select-choice-9" id="categorias_buscar" multiple="multiple" data-native-menu="false" tabindex="-1">
@@ -986,7 +906,6 @@
 	</div>
     <!-- Fin Mapa -->
     
-	
 
 </body>
 </html>
