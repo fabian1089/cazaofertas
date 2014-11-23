@@ -130,8 +130,20 @@
 	alert('error al obtener la geolocalización');
 	}
 	
-	/* document.addEventListener("deviceready", onDeviceReady, false);
-	 function onDeviceReady() {
+	function cargarTodo(){
+	alert('hola');
+	 listCategorias();
+		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
+		  var registrado=window.localStorage.getItem("consecutivoUsuario");
+		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
+	
+		if(registrado==null){ listCategorias2();  window.location.href='index.html#registro';  }
+		else{ listCategorias2();  window.location.href='index.html#busqueda'; }
+	
+	}
+	
+	 document.addEventListener("deviceready", cargarTodo, false);
+	/* function onDeviceReady() {
 	 	  listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
