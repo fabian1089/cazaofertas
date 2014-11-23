@@ -122,7 +122,7 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript"> 
         //El registro al servicio de google lo hacemos automáticamente
-       </script>
+        app.initialize(); </script>
 		
 	<script>	
 	
@@ -136,13 +136,13 @@
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
-	 app.initialize(); 
+	
 		if(registrado==null){ listCategorias2();  window.location.href='#registro';  }
 		else{ listCategorias2();  window.location.href='#busqueda'; }
 	
 	}
 	
-	 document.addEventListener("deviceready", cargarTodo, false);
+	 //document.addEventListener("deviceready", cargarTodo, false);
 	/* function onDeviceReady() {
 	 	  listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
@@ -986,7 +986,7 @@
 	</div>
     <!-- Fin Mapa -->
     
-	<script> //cargarTodo(); </script>
+	<script> cargarTodo(); </script>
 
 </body>
 </html>
