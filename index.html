@@ -122,7 +122,7 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript"> 
         //El registro al servicio de google lo hacemos automáticamente
-        app.initialize(); </script>
+       </script>
 		
 	<script>	
 	
@@ -131,14 +131,14 @@
 	}
 	
 	function cargarTodo(){
-	alert('hola');
+	
 	 listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
-	
-		if(registrado==null){ listCategorias2();  window.location.href='index.html#registro';  }
-		else{ listCategorias2();  window.location.href='index.html#busqueda'; }
+	 app.initialize(); 
+		if(registrado==null){ listCategorias2();  window.location.href='#registro';  }
+		else{ listCategorias2();  window.location.href='#busqueda'; }
 	
 	}
 	
@@ -458,7 +458,7 @@
 					},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se completó el registro. Por favor verifique su conexión a internet');
+				alert('No se cargaron las categorías. Por favor verifique su conexión a internet');
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
 				}
@@ -501,7 +501,7 @@
 					},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se completó el registro. Por favor verifique su conexión a internet');
+				alert('No se cargaron las categorías (2). Por favor verifique su conexión a internet');
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
 				}
@@ -543,7 +543,7 @@
 				},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se completó el registro. Por favor verifique su conexión a internet');
+				alert('No se guardaron las categorías. Por favor verifique su conexión a internet');
 					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					//$.mobile.loading( "hide" );
 				}
@@ -587,7 +587,7 @@
 			  	},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se completó el registro. Por favor verifique su conexión a internet');
+				alert('No se completó el registro de los datos. Por favor verifique su conexión a internet');
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
 				}
@@ -597,6 +597,7 @@
 	
 	}
 	
+		
 	$( document ).on( "pagecreate", "#map-page", function() {
 		var $mapSwitch = $( "#map-switch" ),
 		    $listSwitch = $( "#list-switch" ),
@@ -985,6 +986,7 @@
 	</div>
     <!-- Fin Mapa -->
     
+	<script> //cargarTodo(); </script>
 
 </body>
 </html>
