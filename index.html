@@ -39,7 +39,7 @@
 		
 	.header{
 			color: white !important;
-			background-color:#FFC !important; 
+			background-color:#C28A61 !important; 
 			text-shadow:none !important;
 		}
 		
@@ -47,8 +47,12 @@
 				color: black !important;
 				background-color:#FFC !important; 
 				text-shadow:none !important;
-		}		
-	
+		}	
+		
+	/*.item_lista{
+		background-color:white !important;
+		} */		
+		
 			
 	#panel, .panel_li{
 				background-color: grey !important;
@@ -133,7 +137,7 @@
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
 		
-		//if(registrado==null){ document.location.href='#registro';  } else{ document.location.href='#busqueda'; }
+		if(registrado==null){ listCategorias2(); document.location.href='#registro';  } else{ listCategorias2(); document.location.href='#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
 	 } 
@@ -192,7 +196,7 @@
 					// agregar tambien el còmo llegar!
 			
 			// aqui el for
-				cadena+=" <div data-role='collapsible' data-collapsed='true'> ";
+				cadena+=" <div  data-role='collapsible' data-collapsed='true'> ";
 				cadena+=" <h3>"+titulo+"</h3> ";
 				cadena+=" <p>"+descOferta+"</p >";
 				cadena+="	  </div>"
@@ -344,7 +348,7 @@
 					
 					cadena+="	  	</div>					  </div>";
 								  //lista
-					cadena+="      	  <a href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
+					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
 					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
 					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
@@ -409,15 +413,26 @@
 					var lista=new Array();
 					var cadena="";
 					var cadena2="<option>Categorías</option>";
+					
+					var listaCategorias="";
+					if(window.localStorage.getItem("listaCategorias")!=null){listaCategorias=window.localStorage.getItem("listaCategorias");};
+					
 					for(var cont=0;cont<response.length;cont++){
 					var categ=[response[cont]['id'], response[cont]['nombre'], response[cont]['descripcion']];
 					
 					lista[cont]=categ;
-					//alert(lista[cont][1]);					
+					//alert(lista[cont][1]);
+					if((listaCategorias.indexOf(","+lista[cont][0]))>-1){
+					
 					cadena+="<input type='checkbox' name='check_categorias' id='categoria_"+cont+"' checked='checked' class='custom' value='"+lista[cont][0]+"'  >  ";		
+					cadena2+="<option value='"+lista[cont][0]+"' selected='selected'> "+lista[cont][1]+" </option>";
+					}else{
+					cadena+="<input type='checkbox' name='check_categorias' id='categoria_"+cont+"' class='custom' value='"+lista[cont][0]+"'  >  ";		
+					cadena2+="<option value='"+lista[cont][0]+"' > "+lista[cont][1]+" </option>";
+					}
 					cadena+="<label for='categoria_"+cont+"'>"+lista[cont][1]+"</label>";
 					
-					cadena2+="<option value='"+lista[cont][0]+"' selected='selected'> "+lista[cont][1]+" </option>";
+					
 					
 					}	
 					
@@ -426,7 +441,7 @@
 							
 					window.localStorage.setItem("cantCateg",cont);
 					window.localStorage.setItem("categorias",lista);
-											
+									
 					},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
@@ -437,6 +452,50 @@
 			});
 	
 	}
+	
+	function listCategorias2(){
+	
+	$.ajax({
+			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=categorias",
+				contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {				
+					
+					var lista=new Array();
+					var cadena2="<option>Categorías</option>";
+					
+					var listaCategorias="";
+					if(window.localStorage.getItem("listaCategorias")!=null){listaCategorias=window.localStorage.getItem("listaCategorias");};
+					
+					for(var cont=0;cont<response.length;cont++){
+					var categ=[response[cont]['id'], response[cont]['nombre'], response[cont]['descripcion']];
+					
+					lista[cont]=categ;
+					if((listaCategorias.indexOf(","+lista[cont][0]))>-1){				
+					cadena2+="<option value='"+lista[cont][0]+"' selected='selected'> "+lista[cont][1]+" </option>";
+					}else{
+					cadena2+="<option value='"+lista[cont][0]+"' > "+lista[cont][1]+" </option>";
+					}
+										
+					}	
+										
+					document.getElementById("categorias_buscar").innerHTML =cadena2;
+											
+				$('#categorias_buscar').selectmenu('refresh', true);
+															
+					},
+				//timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se completó el registro. Por favor verifique su conexión a internet');
+					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			});
+	
+	}
+	
 		
 	function guardarcategorias() {
 	
@@ -448,9 +507,8 @@
 		cadena+=","+categoria.value;
 		}
 	}
-	
-	//alert(cadena);
-	
+	window.localStorage.setItem("listaCategorias",cadena);
+	listCategorias2();
 	$.ajax({
 	
 	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=guardarCategorias&categorias="+cadena,
@@ -463,6 +521,7 @@
 				
 				if(response['exito']=='exito'){
 					//alert('Categorías guardadas!!'); //falta guardar en local y mostrar en la pantalla!!!
+					
 					document.location.href='index.html#busqueda';
 					}else{
 					alert('Por favor intentelo de nuevo');
@@ -588,22 +647,21 @@
 </head>
 <body>
 
-<!-- pagina de bienvenida  
+<!-- pagina de bienvenida  --> 
 <div data-role="page" class="jqm-demos" id="home">
 	<div data-role="header" class="jqm-header">
 		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
 	</div>
 
-    <div role="main" > Pàgina de Bienvenida ==> Aquì colocar logo  </div> 
+    <div role="main" > <div align='center'> <img src="login_logo.jpg" alt="CazaOfertas">  </div> </div>
 
 	
 </div>
 <!-- fin pagina de bienvenida --> 
 
-<!-- Registro 
-<div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
+<!-- Registro --> 
 <div data-role="page"  id="registro" class="page" >
-
+<!-- <div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
 <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
@@ -752,7 +810,7 @@
       </div>
    
    <!-- desde aqui -->
-   <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br" >
+   <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br" id="categorias_buscar_cont">
 		<label for="select-choice-9" class="select ui-select">Categorías:</label>
 		<div class="ui-select">
         <select name="select-choice-9" id="categorias_buscar" multiple="multiple" data-native-menu="false" tabindex="-1">

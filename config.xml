@@ -7,18 +7,17 @@
 <name>CazaOfertas</name>
 
 <description>
-Aplicación para buscar las mejores fertas cercanas!
+Aplicación para buscar las mejores ofertas cercanas!
 </description>
 
 <author href="https://wwww.cf-creations.com" email="fabian.ceballos@cf-creations.com">
 Fabián Ceballos
 </author>
 
-<icon src="login_logo.png" gap:role="default" />
+<icon src="login_logo.jpg" gap:role="default" />
 
 <!--Plugin de notificaciones --> 
-<gap:plugin name="org.apache.cordova.device" />
-    <gap:plugin name="com.phonegap.plugins.pushplugin"/>
+    <gap:plugin name="com.phonegap.plugins.pushplugin"/> 
     <access origin="*" /> 
 
 </widget>
