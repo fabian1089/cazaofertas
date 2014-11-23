@@ -49,7 +49,7 @@ var app = {
         console.log('Received Event: ' + id);
         var pushNotification = window.plugins.pushNotification;  //alert('antes del push');
         if (device.platform == 'android' || device.platform == 'Android') {
-            //alert("Register called");
+            alert("Register called");
             //tu Project ID aca!!
            // pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"PROJECT_ID","ecb":"app.onNotificationGCM"});
 		   pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"894721639393","ecb":"app.onNotificationGCM"});
@@ -73,7 +73,7 @@ var app = {
                 if ( e.regid.length > 0 )
                 {
                     console.log("Regid " + e.regid);
-                   // alert('registration id = '+e.regid);
+                    alert('registration id = '+e.regid);
                     //Cuando se registre le pasamos el regid al input
                    document.getElementById('regId').value = e.regid;
 				   window.localStorage.getItem("gcm_id",e.regid);
@@ -82,7 +82,7 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
-             // alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.codigo_oferta);
+              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.codigo_oferta);
 			  
 			 var id_usuario=window.localStorage.getItem("consecutivoUsuario");
 	          var latitud=window.localStorage.getItem('latitud');
