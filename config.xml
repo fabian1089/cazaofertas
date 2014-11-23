@@ -17,6 +17,7 @@ Fabián Ceballos
 <icon src="login_logo.png" gap:role="default" />
 
 <!--Plugin de notificaciones --> 
+	<gap:plugin name="org.apache.cordova.device" />
     <gap:plugin name="com.phonegap.plugins.pushplugin"/> 
     <access origin="*" /> 
 
