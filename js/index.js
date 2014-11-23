@@ -73,7 +73,7 @@ var app = {
                 if ( e.regid.length > 0 )
                 {
                     console.log("Regid " + e.regid);
-                    alert('registration id = '+e.regid);
+                    //alert('registration id = '+e.regid);
                     //Cuando se registre le pasamos el regid al input
                    document.getElementById('regId').value = e.regid;
 				   window.localStorage.getItem("gcm_id",e.regid);

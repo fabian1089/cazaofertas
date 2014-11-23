@@ -138,7 +138,7 @@
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
 	
-		//if(registrado==null){ listCategorias2();  window.location.href='#registro';  } else{ listCategorias2();  window.location.href='#busqueda'; }
+		if(registrado==null){ listCategorias2();  window.location.href='#registro';  } else{ listCategorias2();  window.location.href='#busqueda'; }
 	}
 	
 	
@@ -648,16 +648,16 @@
 </head>
 <body>
 
-<!-- pagina de bienvenida  
+<!-- pagina de bienvenida  -->
 <div data-role="page" class="jqm-demos" id="home">
 	<div data-role="header" class="jqm-header">
 		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
 	</div>
 
-    <div role="main" > <div align='center'> <img src="login_logo.jpg" alt="CazaOfertas">  </div> </div>
+    <div role="main" > <div align='center'> <img src="login_logo.png" alt="CazaOfertas">  </div> </div>
 
 	
-</div>--> 
+</div>
 <!-- fin pagina de bienvenida --> 
 
 <!-- Registro --> 
