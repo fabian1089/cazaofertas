@@ -49,7 +49,7 @@ var app = {
         console.log('Received Event: ' + id);
         var pushNotification = window.plugins.pushNotification;  //alert('antes del push');
         if (device.platform == 'android' || device.platform == 'Android') {
-            alert("Register called");
+            //alert("Register called");
             //tu Project ID aca!!
            // pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"PROJECT_ID","ecb":"app.onNotificationGCM"});
 		   pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"894721639393","ecb":"app.onNotificationGCM"});
@@ -82,14 +82,14 @@ var app = {
  
             case 'message':
               // NOTIFICACION!!!
-              alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.codigo_oferta);
+             // alert('message = '+e.message+' msgcnt = '+e.msgcnt+' Prueba: '+e.codigo_oferta);
 			  
 			 var id_usuario=window.localStorage.getItem("consecutivoUsuario");
 	          var latitud=window.localStorage.getItem('latitud');
 			  var longitud=window.localStorage.getItem('longitud');
               var codigo_oferta= e.message.split('cod:');
 			  
-			   alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
+			   //alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
 			  
 				$.ajax({
 			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=ofertaPorId&codigo_oferta="+codigo_oferta[1]+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
