@@ -137,7 +137,8 @@
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
 		$("div:jqmData(role='panel')").css('margin-top',  ($("div:jqmData(role='header')").height()));
 		
-		if(registrado==null){ listCategorias2(); document.location.href='index.html#registro';  } else{ listCategorias2(); document.location.href='index.html#busqueda'; }
+		if(registrado==null){ listCategorias2(); alert('null'); window.location.href='index.html#registro';  }
+		else{ listCategorias2(); alert('no null'); window.location.href='index.html#busqueda'; }
   
 		// OJO QUITAR COMENTARIO DEL IF CUANDO SE MANDE A PHONEGAP!!!! PARA QUE NO PIDA SIEMPRE EL REGISTRO!! *************************  
 	 } 
