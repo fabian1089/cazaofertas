@@ -10,11 +10,11 @@
 Aplicación para buscar las mejores ofertas cercanas!
 </description>
 
-<author href="https://wwww.cf-creations.com" email="fabian.ceballos@cf-creations.com">
+<author href="https://wwww.cazaofertas.com.co" email="fabian.ceballos@cazaofertas.com.co">
 Fabián Ceballos
 </author>
 
-<icon src="login_logo.jpg" gap:role="default" />
+<icon src="logo.png" gap:role="default" />
 
 <!--Plugin de notificaciones -->
 	<gap:plugin name="org.apache.cordova.device" />
