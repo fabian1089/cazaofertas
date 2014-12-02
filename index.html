@@ -292,6 +292,14 @@
 		
 	function buscarOfertas(){ 
 	
+	$map = $( "#map-canvas" ),
+    $list = $( "#list-canvas" );
+	$("#list-switch").checked="true";
+	$( "#map-switch" ).checked="false";
+	   
+	$list.show();
+	$map.hide();
+	
 	var palabra_clave=document.getElementById('palabra_clave').value;
 	var distancia=document.getElementById('distancia').value;
 	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
@@ -360,7 +368,8 @@
 
 					document.getElementById("list-results").innerHTML =cadena;
 					document.location.href="index.html#map-page";
-						$("#list-results").listview("refresh");					
+						$("#list-results").listview("refresh");	
+						   
 					},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
@@ -649,12 +658,24 @@
 <body>
 
 <!-- pagina de bienvenida  -->
-<div data-role="page" class="jqm-demos" id="home">
-	<div data-role="header" class="jqm-header">
-		<h2><img src="_assets/img/jquery-logo.png" alt="CazaOfertas"></h2>
+<div data-role="page" class="page" id="home">
+	
+	<div data-role="header" class="header" data-position="fixed">
+		<div align="center"> <img src="_assets/img/cazaofertas_header.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<a href="#panel" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
 	</div>
 
-    <div role="main" > <div align='center'> <img src="login_logo.png" alt="CazaOfertas">  </div> </div>
+	<div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
+		<ul data-role="listview">
+			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
+		</ul>
+	</div>
+	
+
+    <div role="main" > <div align='center'> <img src="login_logo.png" alt="CazaOfertas">  </div> 
+	</div>
 
 	
 </div>
@@ -664,7 +685,7 @@
 <div data-role="page"  id="registro" class="page" >
 <!-- <div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
 <div data-role="header" class="header" data-position="fixed">
-		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<div align="center"> <img src="_assets/img/cazaofertas_header.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
 	</div>
 
@@ -739,7 +760,7 @@
 <div data-role="page" id="categorias" class="page">
   
   <div data-role="header" class="header" data-position="fixed">
-		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<div align="center"> <img src="_assets/img/cazaofertas_header.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel2" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
 	</div>
 
@@ -787,7 +808,7 @@
 
 
 <div data-role="header" class="header" data-position="fixed">
-		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<div align="center"> <img src="_assets/img/cazaofertas_header.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel3" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
 	</div>
 
@@ -841,7 +862,7 @@
 <div data-role="page" id="detalle_oferta" class="page">
   
   <div data-role="header" class="header" data-position="fixed">
-		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<div align="center"> <img src="_assets/img/cazaofertas_header.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel5" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
 		<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext"  data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Volver"></a>
 	</div>
@@ -906,7 +927,7 @@
 <div data-role="page" id="local_detalle" class="page">
   
   <div data-role="header" class="header" data-position="fixed">
-		<div align="center"> <img src="_assets/img/jquery-logo.png" alt="CazaOfertas" width="150" height="40"> </div>
+		<div align="center"> <img src="_assets/img/cazaofertas_header.png" alt="CazaOfertas" width="150" height="40"> </div>
 		<a href="#panel4" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
 		<a href="#" data-role="button" data-rel="back" data-icon="back" data-iconpos="notext"  data-inline="true" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" title="Volver"></a>
 	</div>
@@ -934,7 +955,7 @@
 		<div data-role="header" class="header" data-position="fixed">
 		
 		<div class="segmented-control ui-bar-d">
-		 	<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+		 	<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" id="opcion_despliegue">
 	  			<input type="radio" name="switch" id="list-switch" checked="true">
 				<label for="list-switch">Lista</label>
 	         	<input type="radio" name="switch" id="map-switch">
