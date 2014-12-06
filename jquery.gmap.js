@@ -89,7 +89,7 @@
 				try {
 					var pos = parseLatLng($(this).attr('data-marker-info'));
 					// Aquì agregar el numero del ícono!
-					var icono= 'http://www.cazaofertasapp.co/imagenes/logos/'+($(this).attr('icono'))+'.png';
+					var icono= 'http://www.cazaofertasapp.com/imagenes/logos/'+($(this).attr('icono'))+'.png';
 					
 					data.push({ position: pos,
 						icon: icono,
