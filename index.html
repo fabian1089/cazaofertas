@@ -371,7 +371,16 @@
 					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
 					cadena+="  	  		</div>	            	  </a>";
 					
-					}
+					}else{
+						
+						cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarLocal(\""+id_tienda+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
+					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
+					cadena+="   	  	<div class='ui-li-count'>";
+					cadena+="      	  		<span>Actualmente sin ofertas - "+distancia+" Kms</span>"; //cuerpo
+					cadena+="  	  		</div>	            	  </a>";
+						
+						
+						}
 					
 					cadena+="  	</li>";
 					
