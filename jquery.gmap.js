@@ -89,7 +89,7 @@
 				try {
 					var pos = parseLatLng($(this).attr('data-marker-info'));
 					// Aquì agregar el numero del ícono!
-					var icono= 'http://www.soymedico.co/cazaofertas/imagenes/logos/'+($(this).attr('icono'))+'.png';
+					var icono= 'http://www.cazaofertasapp.co/imagenes/logos/'+($(this).attr('icono'))+'.png';
 					
 					data.push({ position: pos,
 						icon: icono,
@@ -141,7 +141,7 @@
 
 			$.each(data, function(i) {
 				//var icon = "http://maps.google.com/mapfiles/marker.png";
-				//var icon="http://www.soymedico.co/cazaofertas/imagenes/logos/none.png";
+				//var icon="http://www.cazaofertasapp.co/imagenes/logos/none.png";
 				var marker = new google.maps.Marker({ map:map, position:this.position, title:this.title, icon:this.icon });
 				var content = this.content;
 				if (content) {

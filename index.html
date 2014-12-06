@@ -164,7 +164,7 @@
 	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
 	
 	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=ofertasLocal&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario+"&id_local="+id_local,
+			  	url: "http://www.cazaofertasapp.com/ofertasLocal.php?pass=fghkdfh432hhjg&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario+"&id_local="+id_local,
 				//contentType: "application/json",
 				//data:datos,	
 				type:'GET',
@@ -181,7 +181,7 @@
 			
 					cadena+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a> </div>";
 		
-		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
+		var imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		document.getElementById('contenido_imagen').innerHTML=imagen_local;
 			
 					
@@ -195,15 +195,16 @@
 					var descOferta=response[cont]['descOferta'];
 					
 					// agregar tambien el còmo llegar!
-			
+			if(titulo!=null && descOferta!=null){ 
 			// aqui el for
 				cadena+=" <div  data-role='collapsible' data-collapsed='true'> ";
 				cadena+=" <h3>"+titulo+"</h3> ";
 				cadena+=" <p>"+descOferta+"</p >";
 				cadena+="	  </div>"
-	  //fin del for
-      
-	 			 cadena+="</div> ";				
+	  //fin del for  
+			
+	 			 cadena+="</div> ";	
+				 }			
 				}
 				
 		var lat= window.localStorage.getItem('latitud');
@@ -211,7 +212,7 @@
 		var latitud=response[0]['latitud'];
 		var longitud=response[0]['longitud'];		
 		cadena+=" <div style='width:95%'> <div class='video'>";
-		cadena+=" <iframe width='640' height='360' src='http://www.soymedico.co/cazaofertas/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div> </div>";
+		cadena+=" <iframe width='640' height='360' src='http://www.cazaofertasapp.com/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div> </div>";
 
 				
 				
@@ -251,9 +252,9 @@
 		tienda+="<p> "+tiendaDesc+" </p>";
 		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
 		
-		var imagen_local="<img src='http://www.soymedico.co/cazaofertas/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
+		var imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="<div class='video'>";
-		mapa+=" <iframe width='640' height='360' src='http://www.soymedico.co/cazaofertas/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div>";
+		mapa+=" <iframe width='640' height='360' src='http://www.cazaofertasapp.com/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div>";
 
 		
 		document.getElementById('titulo_detalle').innerHTML=titulo_detalle;
@@ -316,7 +317,7 @@
 	
 	
 	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=buscarOfertas&palabra="+palabra_clave+"&distancia="+distancia+"&categorias="+lista+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
+			  	url: "http://www.cazaofertasapp.com/buscarOfertas.php?pass=fghkdfh432hhjg&palabra="+palabra_clave+"&distancia="+distancia+"&categorias="+lista+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
 				//contentType: "application/json",
 				//data:datos,	
 				type:'GET',
@@ -352,16 +353,26 @@
 					cadena+="	  <div style='display:none;'> 					    <div class='ui-gmap-marker-info'> ";						
 					cadena+="	  	  <a id='gmap-marker-link'  data-rel='dialog' onclick='mostrarLocal(\""+id_tienda+"\");' ><h4>"+nombre+" <br> "+direccion+" </h4> </a>"; //título						
 					
+					// cambio 02/12/2014
+					if(id_oferta!=null){
 					cadena= listaOfertas(cadena,cont,response);
 					//cadena+="	  	  <p> <strong> "+titulo+": </strong> <br> "+descOferta+" </p>"; //cuerpo	
-					
+					}
 					cadena+="	  	</div>					  </div>";
 								  //lista
+							
+							
+							// cambio 02/12/2014
+					if(id_oferta!=null){	  
+								  
 					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
 					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
 					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
 					cadena+="  	  		</div>	            	  </a>";
+					
+					}
+					
 					cadena+="  	</li>";
 					
 					}				
@@ -392,7 +403,7 @@
 		
 	$.ajax({
 	
-	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=sumarVisitaOferta&id_usuario="+id_usuario+"&id_oferta="+id_oferta+"&bloquear="+bloquear,
+	url: "http://www.cazaofertasapp.com/sumarVisitaOferta.php?pass=fghkdfh432hhjg&id_usuario="+id_usuario+"&id_oferta="+id_oferta+"&bloquear="+bloquear,
 				//contentType: "application/json",
 				//data:datos,	
 				type:'GET',
@@ -413,7 +424,7 @@
 	function listCategorias(){
 	
 	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=categorias",
+			  	url: "http://www.cazaofertasapp.com/categorias.php?pass=fghkdfh432hhjg",
 				//contentType: "application/json",
 				//data:datos,	
 				type:'GET',
@@ -466,7 +477,7 @@
 	function listCategorias2(){
 	
 	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=categorias",
+			  	url: "http://www.cazaofertasapp.com/categorias.php?pass=fghkdfh432hhjg",
 				//contentType: "application/json",
 				//data:datos,	
 				type:'GET',
@@ -521,7 +532,7 @@
 	listCategorias2();
 	$.ajax({
 	
-	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=guardarCategorias&categorias="+cadena,
+	url: "http://www.cazaofertasapp.com/guardarCategorias.php?pass=fghkdfh432hhjg&categorias="+cadena,
 				//contentType: "application/json",
 					
 				type:'GET',
@@ -567,7 +578,7 @@
 	if(nombre!='' && fecha_nac!='' && email!=''){ //validar todos los datos
 	
 	$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=registro&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"&gcm_id="+gcm_id,
+			  	url: "http://www.cazaofertasapp.com/registro.php?pass=fghkdfh432hhjg&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"&gcm_id="+gcm_id,
 				//contentType: "application/json",
 				data:datos,	
 				type:'GET',

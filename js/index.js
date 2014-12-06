@@ -73,7 +73,7 @@ var app = {
                 if ( e.regid.length > 0 )
                 {
                     console.log("Regid " + e.regid);
-                    //alert('registration id = '+e.regid);
+                   // alert('registration id = '+e.regid);
                     //Cuando se registre le pasamos el regid al input
                    document.getElementById('regId').value = e.regid;
 				   window.localStorage.getItem("gcm_id",e.regid);
@@ -89,10 +89,10 @@ var app = {
 			  var longitud=window.localStorage.getItem('longitud');
               var codigo_oferta= e.message.split('cod:');
 			  
-			   //alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
+			   alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
 			  
 				$.ajax({
-			  	url: "http://www.soymedico.co/cazaofertas/servicio.php?accion=ofertaPorId&codigo_oferta="+codigo_oferta[1]+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
+			  	url: "http://www.cazaofertasapp.co/ofertaPorId.php?pass=fghkdfh432hhjg&codigo_oferta="+codigo_oferta[1]+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
 				contentType: "application/json",
 				//data:datos,	
 				type:'GET',
