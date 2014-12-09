@@ -141,9 +141,7 @@
 		if(registrado==null){ listCategorias2();  window.location.href='#registro';  } else{ listCategorias2();  window.location.href='#busqueda'; }
 	}
 	
-	
-	
-	 function obtenerCoordenadas(position){
+	function obtenerCoordenadas(position){
 	 
 	 var latitud=position.coords.latitude;
 	 var longitud=position.coords.longitude;
@@ -155,6 +153,35 @@
 	 window.localStorage.setItem('longitud',longitud);
 	 
 	 }
+	
+	function subscripcion(accion,id_tienda){
+	
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+	var seguir="seguir";
+	if(accion==0){seguir="abandonar";}
+	
+	$.ajax({
+				url: "http://www.cazaofertasapp.com/seguimiento.php?pass=fghkdfh432hhjg&accion="+seguir+"&id_usuario="+id_usuario+"&id_tienda="+id_tienda+"",
+				type:"GET",
+				dataType:"JSON",
+				success: function( response ){
+				
+				if(response['exito']=='exito'){
+				 if(seguir=="seguir"){
+				 document.getElementById('linea_seguimiento').innerHTML=" <a href='index.html#abandonar' data-rel='dialog' onclick='subscripcion(0,\""+id_tienda+"\");' > Dejar de seguir las ofertas de este sitio </a> ";
+				 } else{
+				 document.getElementById('linea_seguimiento').innerHTML=" <a href='index.html#seguir' data-rel='dialog' onclick='subscripcion(1,\""+id_tienda+"\");' > Subscribirme a las ofertas de este sitio </a> ";
+				 }
+				}
+				
+				},
+				error: function (jqXHR, textStatus, errorThrown){
+				alert('Ocurrió un error durante la conexión a la base de datos');
+				}
+	});
+	
+	
+	}
 	
 	function mostrarLocal(id_local){
 	
@@ -176,11 +203,17 @@
 				var direccion=response[0]['direccion'];
 				var tiendaDesc=response[0]['tiendaDesc'];
 				var distancia=response[0]['distancia'];
+				var siguiendo=response[0]['seguimiento'];
 				
-				var cadena="<div align='center'> <h3>"+nombre+"</h3> "+direccion+" ("+distancia+" kms) <br><br> "+tiendaDesc+" <br> ";
+				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) <br> <a href='index.html#imagenes' data-rel='dialog'> Ver local </a> <br><br> "+tiendaDesc;
 			
-					cadena+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a> </div>";
-		
+					//cadena+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a> ";
+					if(siguiendo==0){
+					cadena+=" <br><br> <div id='linea_seguimiento'> <a href='index.html#seguir' data-rel='dialog' onclick='subscripcion(1,\""+id_tienda+"\");' >  Subscribirme a las ofertas de este sitio  </a> </div> ";
+					}else{
+					cadena+=" <br><br> <div id='linea_seguimiento'> <a href='index.html#abandonar' data-rel='dialog' onclick='subscripcion(0,\""+id_tienda+"\");' > Dejar de seguir las ofertas de este sitio  </a> </div> ";
+					}
+					cadena+=" </div>";
 		var imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		document.getElementById('contenido_imagen').innerHTML=imagen_local;
 			
@@ -234,6 +267,22 @@
 	
 	
 	}
+	
+	//Chamboneada: método que vuelve y carga el mapa para que el zoom funcione
+	function recargaMapa() { 
+	
+		var lat= window.localStorage.getItem('latitud');
+	 	var lon= window.localStorage.getItem('longitud');
+		var latitud=window.localStorage.getItem('latRuta');
+		var longitud=window.localStorage.getItem('lonRuta');
+	
+	var mapa="<div class='video'>";
+	mapa+=" <iframe width='640' height='360' src='http://www.cazaofertasapp.com/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div>";
+	document.getElementById('div_mapa').innerHTML=mapa;	
+	
+	
+	
+	}
 		
 	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia){
 		
@@ -243,6 +292,10 @@
 		
 		var lat= window.localStorage.getItem('latitud');
 	 	var lon= window.localStorage.getItem('longitud');
+		
+		//Estas dos variables para que la chamboneada funcione
+		window.localStorage.setItem('latRuta',latitud);
+		window.localStorage.setItem('lonRuta',longitud);
 		
 		var titulo_detalle="<h3>"+titulo+"</h3>";		
 		var oferta=descOferta;
@@ -255,7 +308,8 @@
 		var imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="<div class='video'>";
 		mapa+=" <iframe width='640' height='360' src='http://www.cazaofertasapp.com/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div>";
-
+		//titulo_detalle+="<div class='video'>";
+		//titulo_detalle+=" <iframe width='640' height='360' src='http://www.cazaofertasapp.com/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div>";
 		
 		document.getElementById('titulo_detalle').innerHTML=titulo_detalle;
 		document.getElementById('div_oferta').innerHTML=oferta;
@@ -264,6 +318,9 @@
 		document.getElementById('contenido_imagen').innerHTML=imagen_local;
 		
 		//$('#detalle_oferta').trigger("create");
+		
+	
+		
 		
 		window.localStorage.setItem('ofertaActual',id_oferta);
 		
@@ -347,8 +404,11 @@
 					var distancia=response[cont]['distancia'];
 					var icono=response[cont]['icono'];
 					
-					
-					cadena+=" <li data-marker-info='"+latitud+","+longitud+"' icono='"+icono+"' >";
+					if(id_oferta!=null){
+					cadena+=" <li data-marker-info='"+latitud+","+longitud+"' icono='"+icono+"1' >";
+					}else{
+					cadena+=" <li data-marker-info='"+latitud+","+longitud+"' icono='"+icono+"0' >";
+					}
 								  //marker
 					cadena+="	  <div style='display:none;'> 					    <div class='ui-gmap-marker-info'> ";						
 					cadena+="	  	  <a id='gmap-marker-link'  data-rel='dialog' onclick='mostrarLocal(\""+id_tienda+"\");' ><h4>"+nombre+" <br> "+direccion+" </h4> </a>"; //título						
@@ -526,7 +586,6 @@
 	
 	}
 	
-		
 	function guardarcategorias() {
 	
 	var cantidad=window.localStorage.getItem("cantCateg");
@@ -581,13 +640,16 @@
 	var enviar=document.getElementById('enviar_correo');
 	var enviar_correo="N";
 		if(enviar.checked){enviar_correo="S"; }
+		
+	var lat=window.localStorage.getItem('latitud');
+	var lon=window.localStorage.getItem('longitud');	
 			
 	var datos={'nombre':nombre, 'fecha_nac':fecha_nac,'sexo':sexo , 'email':email, 'accion':'registro', 'enviar_correo':enviar_correo};
 	
 	if(nombre!='' && fecha_nac!='' && email!=''){ //validar todos los datos
 	
 	$.ajax({
-			  	url: "http://www.cazaofertasapp.com/registro.php?pass=fghkdfh432hhjg&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"&gcm_id="+gcm_id,
+			  	url: "http://www.cazaofertasapp.com/registro.php?pass=fghkdfh432hhjg&latitud="+lat+"&longitud="+lon+"&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"&gcm_id="+gcm_id,
 				//contentType: "application/json",
 				data:datos,	
 				type:'GET',
@@ -902,9 +964,11 @@
   <div data-role="tabs" id="tabs" style="width:95%"> 
   <div data-role="navbar">
     <ul>
-      <li><a href="#div_oferta" data-ajax="false">La Oferta</a></li>
+      
+	  
+	  <li><a href="#div_oferta" data-ajax="false">La Oferta</a></li>
       <li><a href="#div_tienda" data-ajax="false">El Lugar</a></li>
-      <li><a href="#div_mapa" data-ajax="false">Cómo llegar</a></li>
+	  <li><a href="#div_mapa" onclick="recargaMapa();" >Cómo llegar</a></li>      
     </ul>
   </div>
   <div id="div_oferta" class="ui-body-d ui-content">
@@ -942,6 +1006,28 @@
   </div>
 </div>
 <!-- Fin Imagenes -->
+
+<!-- seguir -->
+<div data-role="page" id="seguir">
+  <div data-role="header">
+    <h1>CazaOfertas</h1>
+  </div>
+  <div data-role="content" align="center" >
+  De ahora en adelante recibirá notificaciones sobre las ofertas de este sitio.
+  </div>
+</div>
+<!-- Fin seguir -->
+
+<!-- abandonar -->
+<div data-role="page" id="abandonar">
+  <div data-role="header">
+    <h1>CazaOfertas</h1>
+  </div>
+  <div data-role="content" align="center">
+  Ya no recibirá notificaciones sobre las ofertas de este sitio.
+  </div>
+</div>
+<!-- Fin abandonar -->
 
 <!-- detalle local -->
 <div data-role="page" id="local_detalle" class="page">
