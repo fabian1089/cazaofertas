@@ -9,7 +9,7 @@
 	.segmented-control { text-align:center; }
 	.segmented-control .ui-controlgroup { display:inline; margin:.2em 0px; }
 
-	#map-page { width:100%; height:100%; }
+	#map-page { width:100%; height:100%; color: black !important; }
 	#map-canvas { width:100%; height:100%; margin-top:-30px; padding:0px!important; }
 	#gmap-marker-link { color:#00a0df; text-decoration:none; }
 
@@ -39,13 +39,13 @@
 		
 	.header{
 			color: white !important;
-			background-color:#C28A61 !important; 
+			background-color:#F0E1E1 !important; 
 			text-shadow:none !important;
 		}
 		
 	.page{
-				color: black !important;
-				background-color:#FFC !important; 
+				color: white !important;
+				background-color:#252525 !important; 
 				text-shadow:none !important;
 		}	
 		
@@ -55,41 +55,41 @@
 		
 			
 	#panel, .panel_li{
-				background-color: grey !important;
+				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: white !important;
+				color: black !important;
 			}  
 	#panel2, .panel_li{
-				background-color: grey !important;
+				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: white !important;
+				color: black !important;
 			}  
 #panel3, .panel_li{
-				background-color: grey !important;
+				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: white !important;
+				color: black !important;
 			}  
 #panel4, .panel_li{
-				background-color: grey !important;
+				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: white !important;
+				color: black !important;
 			}  
 #panel5, .panel_li{
-				background-color: grey !important;
+				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: white !important;
+				color: black !important;
 			}  
 #panel6, .panel_li{
-				background-color: grey !important;
+				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: white !important;
+				color: black !important;
 			}  			
 			
 			
 			
 		</style>
 	<style>
-	
+		
 	.video {
    position: relative;
    padding-bottom: 56.25%;
@@ -115,7 +115,15 @@
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
 	<!-- Google Maps JS assets are loaded at bottom of page for performance -->
-	
+
+<!--Estilos de la lista!!! -->
+	<style>
+	.ui-page-theme-b .ui-btn, html .ui-bar-b .ui-btn, html .ui-body-b .ui-btn, html body .ui-group-theme-b .ui-btn, html head+body .ui-btn.ui-btn-b, .ui-page-theme-b .ui-btn:visited, html .ui-bar-b .ui-btn:visited, html .ui-body-b .ui-btn:visited, html body .ui-group-theme-b .ui-btn:visited, html head+body .ui-btn.ui-btn-b:visited {
+background-color: #382828;
+border-color: #7C5C77;
+color: #fff;
+text-shadow: 0 1px 0 #111;
+}	</style> 
 	
 	<!-- Esta es la parte para notificaciones push! -->
 	    <script type="text/javascript" src="PushNotification.js"></script>
@@ -244,7 +252,7 @@
 	 	var lon= window.localStorage.getItem('longitud');
 		var latitud=response[0]['latitud'];
 		var longitud=response[0]['longitud'];		
-		cadena+=" <div style='width:95%'> <div class='video'>";
+		cadena+=" <div style='width:95%'> <div class='video' style='background:white !important'>";
 		cadena+=" <iframe width='640' height='360' src='http://www.cazaofertasapp.com/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div> </div>";
 
 				
@@ -764,7 +772,7 @@
 <!-- fin pagina de bienvenida --> 
 
 <!-- Registro --> 
-<div data-role="page"  id="registro" class="page" >
+<div data-role="page"  id="registro" class="page" data-theme="b">
 <!-- <div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
 <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -828,7 +836,7 @@
 
 <input type="submit" value="Enviar" id="enviarDatos" onclick="enviarRegistro();" data-role="button" data-inline="true"/>
 
-<a href="index.html#busqueda" data-role="button" data-inline="true" data-transition="slide" >Omitir</a>
+<!-- <a href="index.html#busqueda" data-role="button" data-inline="true" data-transition="slide" >Omitir</a> -->
 <br>
 	</form>
      </div>
@@ -839,7 +847,7 @@
 <!-- Fin Registro -->
 
 <!-- Categorias -->
-<div data-role="page" id="categorias" class="page">
+<div data-role="page" id="categorias" class="page" data-theme="b">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -885,8 +893,8 @@
 </div>
 <!-- Fin categorías -->
 
-<!-- Busqueda -->
-<div data-role="page" class="page" id="busqueda">
+<!-- Busqueda --> 
+<div data-role="page" class="page" id="busqueda" data-theme="b" >
 
 
 <div data-role="header" class="header" data-position="fixed">
@@ -929,9 +937,13 @@
 	</div>
    <!-- hasta aqui -->
    
-<br>
+
 	<a href="#" data-role="button" id="botonCategorias"   data-icon="search" onclick="buscarOfertas();">Buscar</a>
-<br>	
+<!--<div align="center" >  style="background:  url(logo.png) no-repeat 0 50%; background-position-x: 50%; background-position-y: 90%;  opacity:50%;" 
+ <img src='logo.png' style='max-width: 100%;'  alt='Imagen no disponible'> 
+</div>-->
+	
+	
 	
 </div><!-- /content -->
 	   
@@ -941,7 +953,7 @@
 <!-- Fin Busqueda -->
 
 <!-- Detalle oferta -->
-<div data-role="page" id="detalle_oferta" class="page">
+<div data-role="page" id="detalle_oferta" class="page" data-theme="b">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -977,7 +989,7 @@
   <div id="div_tienda">
     
   </div>
-  <div id="div_mapa"> 
+  <div id="div_mapa" style="background:white !important"> 
   
   </div>
   
@@ -1030,7 +1042,7 @@
 <!-- Fin abandonar -->
 
 <!-- detalle local -->
-<div data-role="page" id="local_detalle" class="page">
+<div data-role="page" id="local_detalle" class="page" data-theme="b">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -1055,7 +1067,7 @@
 <!-- detalle local -->
 
 <!-- Mapa -->
-	<div data-role="page" id="map-page" class="page">
+	<div data-role="page" id="map-page" class="page" data-theme="b">
 		
 		
 		<div data-role="header" class="header" data-position="fixed">
