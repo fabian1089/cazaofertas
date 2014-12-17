@@ -157,6 +157,7 @@ text-shadow: 0 1px 0 #f3f3f3;
 	 document.addEventListener("deviceready", cargarTodo, false);
 	 
 	function cargarTodo(){
+	$.mobile.defaultPageTransition='slide';
 		 listCategorias();
 		  navigator.geolocation.getCurrentPosition(obtenerCoordenadas, errorpos ,{enableHighAccuracy: true});	
 		  var registrado=window.localStorage.getItem("consecutivoUsuario");
@@ -236,7 +237,7 @@ text-shadow: 0 1px 0 #f3f3f3;
 				
 				},
 				error: function (jqXHR, textStatus, errorThrown){
-				alert('Ocurrió un error durante la conexión a la base de datos');
+				alert('Ocurrió un error durante la conexión a la base de datos. No fue posible aplicar a oferta');
 				}
 	});
 	
@@ -374,7 +375,9 @@ text-shadow: 0 1px 0 #f3f3f3;
 		//Aquí abajo validar si ya ha aplicado (eso toca en buscarOferta.php)
 		
 			if(aplico=="N"){
+			if(disponibles>0){
 			oferta+=" </br> <a href='index.html#aplicar' data-rel='dialog' onclick='aplicar_oferta(1,\""+id_oferta+"\");' > Aplica a esta oferta!  </a> </div> </br>"
+			}
 			}else{ 
 			oferta+=" </br> <a href='index.html#declinar' data-rel='dialog' onclick='aplicar_oferta(0,\""+id_oferta+"\");' > Cancelar reserva para esta oferta!  </a> </div> </br>"
 			}
