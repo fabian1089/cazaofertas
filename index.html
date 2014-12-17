@@ -236,8 +236,8 @@ text-shadow: 0 1px 0 #f3f3f3;
 				}
 				
 				},
-				error: function (jqXHR, textStatus, errorThrown){
-				alert('Ocurrió un error durante la conexión a la base de datos. No fue posible aplicar a oferta');
+				error: function (data, textStatus, errorThrown){
+				alert('Ocurrió un error durante la conexión a la base de datos. No fue posible aplicar a oferta'+data.error);
 				}
 	});
 	
