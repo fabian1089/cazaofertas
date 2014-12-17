@@ -47,6 +47,7 @@
 				color: white !important;
 				background-color:#252525 !important; 
 				text-shadow:none !important;
+				
 		}	
 		
 	/*.item_lista{
@@ -116,14 +117,29 @@
 	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
 	<!-- Google Maps JS assets are loaded at bottom of page for performance -->
 
-<!--Estilos de la lista!!! -->
+<!--Estilos del tema!!! -->
 	<style>
 	.ui-page-theme-b .ui-btn, html .ui-bar-b .ui-btn, html .ui-body-b .ui-btn, html body .ui-group-theme-b .ui-btn, html head+body .ui-btn.ui-btn-b, .ui-page-theme-b .ui-btn:visited, html .ui-bar-b .ui-btn:visited, html .ui-body-b .ui-btn:visited, html body .ui-group-theme-b .ui-btn:visited, html head+body .ui-btn.ui-btn-b:visited {
-background-color: #382828;
-border-color: #7C5C77;
-color: #fff;
-text-shadow: 0 1px 0 #111;
-}	</style> 
+
+background-color: #F0E1E1;
+border-color: #999;
+
+color: #000;
+text-shadow: 0 1px 0 #F0E1E1;
+font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+font-size:14px;
+}
+
+
+.ui-page-theme-a .ui-btn:hover, html .ui-bar-a .ui-btn:hover, html .ui-body-a .ui-btn:hover, html body .ui-group-theme-a .ui-btn:hover, html head+body .ui-btn.ui-btn-a:hover {
+background-color: #171616;
+border-color: #151414;
+color: #FFF;
+text-shadow: 0 1px 0 #f3f3f3;
+}
+
+
+	</style> 
 	
 	<!-- Esta es la parte para notificaciones push! -->
 	    <script type="text/javascript" src="PushNotification.js"></script>
@@ -191,6 +207,42 @@ text-shadow: 0 1px 0 #111;
 	
 	}
 	
+	function aplicar_oferta(accion,id_oferta){
+	
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+	var aplicar="aplicar";
+	if(accion==0){aplicar="cancelar";}
+	
+	
+		$.ajax({
+				url: "http://www.cazaofertasapp.com/aplicar_oferta.php?pass=fghkdfh432hhjg&accion="+aplicar+"&id_usuario="+id_usuario+"&id_oferta="+id_oferta+"",
+				type:"GET",
+				dataType:"JSON",
+				success: function( response ){
+				
+				if(response['exito']=='exito'){
+				 
+				 var texto="Esta oferta es limitada, quedan disponibles "+response['disponibles']+" cupos de "+response['cantidad']+" </br> ";
+				 
+				 if(aplicar=="aplicar"){
+				 texto+="<a href='index.html#declinar' data-rel='dialog' onclick='aplicar_oferta(0,\""+id_oferta+"\");' > Cancelar reserva para esta oferta!  </a>";					
+				 } else{
+					texto+="<a href='index.html#aplicar' data-rel='dialog' onclick='aplicar_oferta(1,\""+id_oferta+"\");' > Aplica a esta oferta!  </a>";
+				 }
+
+				 document.getElementById('oferta_limitada').innerHTML=texto;
+				 
+				}
+				
+				},
+				error: function (jqXHR, textStatus, errorThrown){
+				alert('Ocurrió un error durante la conexión a la base de datos');
+				}
+	});
+	
+	
+	}
+	
 	function mostrarLocal(id_local){
 	
 	//alert('Listar todas las ofertas del local '+id_local);
@@ -213,7 +265,14 @@ text-shadow: 0 1px 0 #111;
 				var distancia=response[0]['distancia'];
 				var siguiendo=response[0]['seguimiento'];
 				
-				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) <br> <a href='index.html#imagenes' data-rel='dialog'> Ver local </a> <br><br> "+tiendaDesc;
+				var fotos=response[0]['fotos'];
+				
+				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) ";
+				
+				if(fotos>0){
+				cadena+="<br> <a href='index.html#imagenes' data-rel='dialog'> Ver local </a>"
+					}
+					cadena+="<br><br> "+tiendaDesc;
 			
 					//cadena+="<a href='index.html#imagenes' data-rel='dialog'> Ver local </a> ";
 					if(siguiendo==0){
@@ -292,7 +351,7 @@ text-shadow: 0 1px 0 #111;
 	
 	}
 		
-	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia){
+	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia,cantidad,limite,disponibles, fotos, aplico, fotos_tienda){
 		
 		//consultar todo y pintarlo en detalle_oferta. 
 		//incluir: fotos de la oferta, de la tienda, mapa de còmo llegar
@@ -306,13 +365,33 @@ text-shadow: 0 1px 0 #111;
 		window.localStorage.setItem('lonRuta',longitud);
 		
 		var titulo_detalle="<h3>"+titulo+"</h3>";		
-		var oferta=descOferta;
+		
+		//Cambio para foto y cupòn de la oferta
+		var oferta="";		
+		
+		if(limite=="S"){
+		oferta+="<div align='center' id='oferta_limitada'> Esta oferta es limitada, quedan disponibles "+disponibles+" cupos de "+cantidad;
+		//Aquí abajo validar si ya ha aplicado (eso toca en buscarOferta.php)
+		
+			if(aplico=="N"){
+			oferta+=" </br> <a href='index.html#aplicar' data-rel='dialog' onclick='aplicar_oferta(1,\""+id_oferta+"\");' > Aplica a esta oferta!  </a> </div> </br>"
+			}else{ 
+			oferta+=" </br> <a href='index.html#declinar' data-rel='dialog' onclick='aplicar_oferta(0,\""+id_oferta+"\");' > Cancelar reserva para esta oferta!  </a> </div> </br>"
+			}
+		}		
+		if(fotos>0){
+		oferta+="<div align='center'> <img src='http://www.cazaofertasapp.com/imagenes/ofertas/"+id_oferta+".jpeg' style='max-width: 100%;'  alt='Imagen no disponible'> </div> </br>";
+		}
+		// fin cambio foto oferta y cupòn
+		oferta+=descOferta;
 		
 		var tienda="<div align='center'> <a onclick='mostrarLocal("+id_tienda+");'> <h3>"+nombre+"</h3> </a>";
 		tienda+="<h5> "+direccion+" ("+distancia+" kms)</h5>";
 		tienda+="<p> "+tiendaDesc+" </p>";
-		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
 		
+		if(fotos_tienda>0){
+		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
+		}
 		var imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+id_tienda+".jpg' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		var mapa="<div class='video'>";
 		mapa+=" <iframe width='640' height='360' src='http://www.cazaofertasapp.com/ruta.php?lat1="+lat+"&long1="+lon+"&lat2="+latitud+"&long2="+longitud+"' ></iframe> </div>";
@@ -327,13 +406,7 @@ text-shadow: 0 1px 0 #111;
 		
 		//$('#detalle_oferta').trigger("create");
 		
-	
-		
-		
-		window.localStorage.setItem('ofertaActual',id_oferta);
-		
-		
-		
+		window.localStorage.setItem('ofertaActual',id_oferta);		
 		window.location.href="index.html#detalle_oferta";
 		
 	/*	$.mobile.changePage('#detalle_oferta',{
@@ -346,7 +419,7 @@ text-shadow: 0 1px 0 #111;
 	// Método recursivo para colocar varias ofertas en un mismo marker
 	function listaOfertas(cadena,pos,response){
 	
-	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\");'> <strong> "+response[pos]['titulo']+": </strong> <br> "+(response[pos]['descOferta']).substring(0, 40)+"...(leer más) <br> </p>"
+	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\", \""+response[pos]['cantidad']+"\" , \""+response[pos]['limite']+"\" , \""+response[pos]['disponibles']+"\" , \""+response[pos]['fotos']+"\" , \""+response[pos]['aplico']+"\");'> <strong> "+response[pos]['titulo']+": </strong> <br> "+(response[pos]['descOferta']).substring(0, 40)+"...(leer más) <br> </p>"
 	
 		if(pos>0){	
 			if(response[pos]['id_tienda']==response[pos-1]['id_tienda']){		
@@ -368,7 +441,7 @@ text-shadow: 0 1px 0 #111;
 	
 	var palabra_clave=document.getElementById('palabra_clave').value;
 	var distancia=document.getElementById('distancia').value;
-	var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario");  
 	var latitud=window.localStorage.getItem('latitud');
 	var longitud=window.localStorage.getItem('longitud');
 	
@@ -412,6 +485,14 @@ text-shadow: 0 1px 0 #111;
 					var distancia=response[cont]['distancia'];
 					var icono=response[cont]['icono'];
 					
+					var cantidad=response[cont]['cantidad'];
+					var limite=response[cont]['limite'];
+					var disponibles=response[cont]['disponibles'];
+					var fotos=response[cont]['fotos'];
+					var aplico=response[cont]['aplico'];
+					
+					var fotos_tienda=response[cont]['fotos_tienda'];
+					
 					if(id_oferta!=null){
 					cadena+=" <li data-marker-info='"+latitud+","+longitud+"' icono='"+icono+"1' >";
 					}else{
@@ -433,7 +514,7 @@ text-shadow: 0 1px 0 #111;
 							// cambio 02/12/2014
 					if(id_oferta!=null){	  
 								  
-					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
+					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\" , \""+cantidad+"\" , \""+limite+"\" , \""+disponibles+"\" , \""+fotos+"\" , \""+aplico+"\", \""+fotos_tienda+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
 					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
 					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
@@ -1019,10 +1100,38 @@ text-shadow: 0 1px 0 #111;
 </div>
 <!-- Fin Imagenes -->
 
+<!-- aplicar -->
+<div data-role="page" id="aplicar">
+  <div data-role="header">
+    <div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
+  </div>
+  <div data-role="content" align="center" >
+  Usuario: 
+	<script> 
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario"); 
+	document.write(id_usuario); </script>  
+	Ha aplicado exitosamente a esta oferta
+  
+  </div>
+</div>
+<!-- Fin aplicar -->
+
+<!-- declinar -->
+<div data-role="page" id="declinar">
+  <div data-role="header">
+    <div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
+  </div>
+  <div data-role="content" align="center" >
+  Ud. ha cancelado la reserva para esta oferta. </br> Gracias por darle la oportunidad a otros usuarios. 
+  </div>
+</div>
+<!-- Fin declinar -->
+
+
 <!-- seguir -->
 <div data-role="page" id="seguir">
   <div data-role="header">
-    <h1>CazaOfertas</h1>
+    <div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
   </div>
   <div data-role="content" align="center" >
   De ahora en adelante recibirá notificaciones sobre las ofertas de este sitio.
@@ -1031,9 +1140,9 @@ text-shadow: 0 1px 0 #111;
 <!-- Fin seguir -->
 
 <!-- abandonar -->
-<div data-role="page" id="abandonar">
+<div data-role="page" id="abandonar" >
   <div data-role="header">
-    <h1>CazaOfertas</h1>
+    <div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
   </div>
   <div data-role="content" align="center">
   Ya no recibirá notificaciones sobre las ofertas de este sitio.
@@ -1067,7 +1176,7 @@ text-shadow: 0 1px 0 #111;
 <!-- detalle local -->
 
 <!-- Mapa -->
-	<div data-role="page" id="map-page" class="page" data-theme="b">
+	<div data-role="page" id="map-page" class="page" >
 		
 		
 		<div data-role="header" class="header" data-position="fixed">
