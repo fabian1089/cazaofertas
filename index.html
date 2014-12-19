@@ -47,6 +47,8 @@
 				color: white !important;
 				background-color:#252525 !important; 
 				text-shadow:none !important;
+				font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+				font-size:12px !important;
 				
 		}	
 		
@@ -127,7 +129,7 @@ border-color: #999;
 color: #000;
 text-shadow: 0 1px 0 #F0E1E1;
 font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-font-size:14px;
+font-size:12px;
 }
 
 
@@ -136,6 +138,28 @@ background-color: #171616;
 border-color: #151414;
 color: #FFF;
 text-shadow: 0 1px 0 #f3f3f3;
+}
+
+.ui-listview li h1, .ui-listview li h2, .ui-listview li h3, .ui-listview li h4, .ui-listview li h5, .ui-listview li h6 {
+font-size: 12px;
+font-weight: 700;
+display: block;
+margin: .45em 0;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+}
+
+
+.ui-mobile label, div.ui-controlgroup-label {
+font-weight: 400;
+font-size: 12px;
+}
+
+.ui-listview .ui-li-has-count .ui-btn-icon-right {
+padding-right: 4.6875em;
+padding-top: 0px;
+padding-bottom: 0px;
 }
 
 
@@ -214,7 +238,6 @@ text-shadow: 0 1px 0 #f3f3f3;
 	var aplicar="aplicar";
 	if(accion==0){aplicar="cancelar";}
 	
-	alert("http://www.cazaofertasapp.com/aplicar_oferta.php?pass=fghkdfh432hhjg&accion="+aplicar+"&id_usuario="+id_usuario+"&id_oferta="+id_oferta+"");
 		$.ajax({
 				url: "http://www.cazaofertasapp.com/aplicar_oferta.php?pass=fghkdfh432hhjg&accion="+aplicar+"&id_usuario="+id_usuario+"&id_oferta="+id_oferta+"",
 				type:"GET",
@@ -236,8 +259,8 @@ text-shadow: 0 1px 0 #f3f3f3;
 				}
 				
 				},
-				error: function (data, textStatus, errorThrown){
-				alert('Ocurrió un error durante la conexión a la base de datos. No fue posible aplicar a oferta '+data.error);
+				error: function (jqXHR, textStatus, errorThrown){
+				alert('Ocurrió un error durante la conexión a la base de datos. No fue posible aplicar a oferta '+jqXHR.error);
 				alert('Ocurrió un error durante la conexión a la base de datos. No fue posible aplicar a oferta '+textStatus);
 				alert('Ocurrió un error durante la conexión a la base de datos. No fue posible aplicar a oferta '+errorThrown);
 				}
@@ -520,7 +543,7 @@ text-shadow: 0 1px 0 #f3f3f3;
 					if(id_oferta!=null){	  
 								  
 					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\" , \""+cantidad+"\" , \""+limite+"\" , \""+disponibles+"\" , \""+fotos+"\" , \""+aplico+"\", \""+fotos_tienda+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
-					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
+					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1> </br></br>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
 					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
 					cadena+="  	  		</div>	            	  </a>";
@@ -528,7 +551,7 @@ text-shadow: 0 1px 0 #f3f3f3;
 					}else{
 						
 						cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarLocal(\""+id_tienda+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
-					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1>"; //título
+					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1> </br></br>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
 					cadena+="      	  		<span>Actualmente sin ofertas - "+distancia+" Kms</span>"; //cuerpo
 					cadena+="  	  		</div>	            	  </a>";
@@ -1112,9 +1135,9 @@ text-shadow: 0 1px 0 #f3f3f3;
   </div>
   <div data-role="content" align="center" >
   Usuario: 
-	<script> 
+<!--	<script> 
 	var id_usuario=window.localStorage.getItem("consecutivoUsuario"); 
-	document.write(id_usuario); </script>  
+	document.write(id_usuario); </script>  -->
 	Ha aplicado exitosamente a esta oferta
   
   </div>
