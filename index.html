@@ -372,8 +372,9 @@ padding-bottom: 0px;
 				var siguiendo=response[0]['seguimiento'];
 				
 				var fotos=response[0]['fotos'];
+				var telefonos=response[0]['telefonos'];
 				
-				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) ";
+				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) <br> "+telefonos+"";
 				
 				if(fotos>0){
 				cadena+="<br> <a href='index.html#imagenes' data-rel='dialog'> Ver local </a>"
@@ -457,7 +458,7 @@ padding-bottom: 0px;
 	
 	}
 		
-	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia,cantidad,limite,disponibles, fotos, aplico, fotos_tienda){
+	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia,cantidad,limite,disponibles, fotos, aplico, fotos_tienda,telefonos){
 		
 		//consultar todo y pintarlo en detalle_oferta. 
 		//incluir: fotos de la oferta, de la tienda, mapa de còmo llegar
@@ -494,8 +495,9 @@ padding-bottom: 0px;
 		oferta+=descOferta;
 		
 		var tienda="<div align='center'> <a onclick='mostrarLocal("+id_tienda+");'> <h3>"+nombre+"</h3> </a>";
-		tienda+="<h5> "+direccion+" ("+distancia+" kms)</h5>";
+		tienda+="<h5> "+direccion+" ("+distancia+" kms) <br> "+telefonos+" </h5>";
 		tienda+="<p> "+tiendaDesc+" </p>";
+		
 		
 		if(fotos_tienda>0){
 		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
@@ -527,7 +529,7 @@ padding-bottom: 0px;
 	// Método recursivo para colocar varias ofertas en un mismo marker
 	function listaOfertas(cadena,pos,response){
 	
-	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\", \""+response[pos]['cantidad']+"\" , \""+response[pos]['limite']+"\" , \""+response[pos]['disponibles']+"\" , \""+response[pos]['fotos']+"\" , \""+response[pos]['aplico']+"\");'> <strong> "+response[pos]['titulo']+": </strong> <br> "+(response[pos]['descOferta']).substring(0, 40)+"...(leer más) <br> </p>"
+	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\", \""+response[pos]['cantidad']+"\" , \""+response[pos]['limite']+"\" , \""+response[pos]['disponibles']+"\" , \""+response[pos]['fotos']+"\" , \""+response[pos]['aplico']+"\" , \""+response[pos]['telefonos']+"\");'> <strong> "+response[pos]['titulo']+": </strong> <br> "+(response[pos]['descOferta']).substring(0, 40)+"...(leer más) <br> </p>"
 	
 		if(pos>0){	
 			if(response[pos]['id_tienda']==response[pos-1]['id_tienda']){		
@@ -598,8 +600,9 @@ padding-bottom: 0px;
 					var disponibles=response[cont]['disponibles'];
 					var fotos=response[cont]['fotos'];
 					var aplico=response[cont]['aplico'];
-					
+										
 					var fotos_tienda=response[cont]['fotos_tienda'];
+					var telefonos=response[cont]['telefonos'];
 					
 					if(id_oferta!=null){
 					cadena+=" <li data-marker-info='"+latitud+","+longitud+"' icono='"+icono+"1' >";
@@ -622,7 +625,7 @@ padding-bottom: 0px;
 							// cambio 02/12/2014
 					if(id_oferta!=null){	  
 								  
-					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\" , \""+cantidad+"\" , \""+limite+"\" , \""+disponibles+"\" , \""+fotos+"\" , \""+aplico+"\", \""+fotos_tienda+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
+					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\" , \""+cantidad+"\" , \""+limite+"\" , \""+disponibles+"\" , \""+fotos+"\" , \""+aplico+"\", \""+fotos_tienda+"\" , \""+telefonos+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
 					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1> </br></br>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
 					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
@@ -957,7 +960,8 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
-			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>	
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
 	</div>
@@ -981,7 +985,8 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
-			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
 	</div>
@@ -1062,6 +1067,7 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel2" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>
 			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
@@ -1110,8 +1116,8 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel3" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>
 			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>	
-			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>	
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
 	</div>
@@ -1170,7 +1176,8 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel5" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
-			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>										
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
 	</div>
@@ -1184,8 +1191,8 @@ padding-bottom: 0px;
     <ul>
       
 	  
-	  <li><a href="#div_oferta" data-ajax="false">La Oferta</a></li>
-      <li><a href="#div_tienda" data-ajax="false">El Lugar</a></li>
+	  <li><a href="#div_oferta" data-ajax="false">La oferta</a></li>
+      <li><a href="#div_tienda" data-ajax="false">El lugar</a></li>
 	  <li><a href="#div_mapa" onclick="recargaMapa();" >Cómo llegar</a></li>      
     </ul>
   </div>
@@ -1286,7 +1293,8 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel4" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
-			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
+			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>	
+			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>						
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
 	</div>
@@ -1310,6 +1318,7 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+			<li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>			
 			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
@@ -1404,6 +1413,7 @@ padding-bottom: 0px;
 	<div data-role="panel" id="panel6" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
+		    <li data-icon="info"><a href="#editar_perfil" class="panel_li"	>Perfil</a></li>			
 			<li data-icon="gear"><a href="#categorias" class="panel_li"	>Configuración</a></li>			
 			<li data-icon="home"><a href="#" class="panel_li"	onclick="if(confirm('¿Realmente desea salir?')){ navigator.app.exitApp(); }" >Salir</a></li>
 		</ul>
