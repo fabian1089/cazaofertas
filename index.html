@@ -174,6 +174,62 @@ padding-bottom: 0px;
 		
 	<script>	
 	
+	function editar_perfil(){ 
+	
+	var id_usuario=window.localStorage.getItem("consecutivoUsuario"); 
+	var nombre=document.getElementById('nombre2').value;
+	var fecha_nac=document.getElementById('fecha_nac2').value;
+	var sexo=document.getElementById('sexo2').value;
+	var email=document.getElementById('email2').value;
+	var enviar=document.getElementById('enviar_correo2');
+	var celular=document.getElementById('celular2').value;
+		
+	window.localStorage.setItem("nombre",nombre); 
+	window.localStorage.setItem("celular",celular); 
+	window.localStorage.setItem("fecha_nac",fecha_nac); 
+	window.localStorage.setItem("sexo",sexo); 
+	window.localStorage.setItem("email",email); 
+		
+	var enviar_correo="N";
+		if(enviar.checked){enviar_correo="S"; }
+		
+	window.localStorage.setItem("enviar_correo",enviar_correo); 
+	
+	var lat=window.localStorage.getItem('latitud');
+	var lon=window.localStorage.getItem('longitud');	
+			
+	//var datos={'nombre':nombre, 'fecha_nac':fecha_nac,'sexo':sexo , 'email':email, 'accion':'registro', 'enviar_correo':enviar_correo};
+	
+	if(nombre!='' && fecha_nac!='' && celular!=''){ //validar todos los datos
+	
+	$.ajax({
+			  	url: "http://www.cazaofertasapp.com/editar_perfil.php?pass=fghkdfh432hhjg&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"&celular="+celular+"&id_usuario="+id_usuario,
+				//contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {				
+					if(response['exito']=='exito'){
+					alert('Sus datos han sido actualizados exitosamente');
+					//window.localStorage.setItem("consecutivoUsuario",response['id']);
+					//document.location.href='index.html#categorias';
+					}else{
+					alert('Por favor intentelo de nuevo');
+					}
+						
+			  	},
+				//timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se completó el registro de los datos. Por favor verifique su conexión a internet');
+					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			});
+			
+	}
+	
+	}
+			
 	function cargarDatos(){
 	
 	var nombre=window.localStorage.getItem("nombre"); 
@@ -181,12 +237,15 @@ padding-bottom: 0px;
 	var fecha_nac=window.localStorage.getItem("fecha_nac"); 
 	var sexo=window.localStorage.getItem("sexo"); 
 	var email=window.localStorage.getItem("email"); 
+	var enviar_correo=window.localStorage.getItem("enviar_correo"); 
 	
 	document.getElementById("nombre2").value=nombre;
 	document.getElementById("celular2").value=celular;
 	document.getElementById("fecha_nac2").value=fecha_nac;
-	//document.getElementById("sexo2").value=nombre;
 	document.getElementById("email2").value=email;
+	if(sexo=="M"){ document.getElementById("sexoM").selected="true"};
+	if(sexo=="F"){ document.getElementById("sexoF").selected="true"};
+	if(enviar_correo!='N'){document.getElementById("enviar_correo2").checked='true';}
 	
 	 }
 	
@@ -776,30 +835,30 @@ padding-bottom: 0px;
 	var sexo=document.getElementById('sexo').value;
 	var email=document.getElementById('email').value;
 	var enviar=document.getElementById('enviar_correo');
-	var celular=document.getElementById('celular');
-	
+	var celular=document.getElementById('celular').value;
 	
 	window.localStorage.setItem("nombre",nombre); 
 	window.localStorage.setItem("celular",celular); 
 	window.localStorage.setItem("fecha_nac",fecha_nac); 
 	window.localStorage.setItem("sexo",sexo); 
 	window.localStorage.setItem("email",email); 
-	
-	
+		
 	var enviar_correo="N";
 		if(enviar.checked){enviar_correo="S"; }
 		
+	window.localStorage.setItem("enviar_correo",enviar_correo); 
+	
 	var lat=window.localStorage.getItem('latitud');
 	var lon=window.localStorage.getItem('longitud');	
 			
-	var datos={'nombre':nombre, 'fecha_nac':fecha_nac,'sexo':sexo , 'email':email, 'accion':'registro', 'enviar_correo':enviar_correo};
+	//var datos={'nombre':nombre, 'fecha_nac':fecha_nac,'sexo':sexo , 'email':email, 'accion':'registro', 'enviar_correo':enviar_correo};
 	
 	if(nombre!='' && fecha_nac!='' && celular!=''){ //validar todos los datos
 	
 	$.ajax({
 			  	url: "http://www.cazaofertasapp.com/registro.php?pass=fghkdfh432hhjg&latitud="+lat+"&longitud="+lon+"&nombre="+nombre+"&fecha_nac="+fecha_nac+"&sexo="+sexo+"&email="+email+"&enviar_correo="+enviar_correo+"&gcm_id="+gcm_id+"&celular="+celular,
 				//contentType: "application/json",
-				data:datos,	
+				//data:datos,	
 				type:'GET',
 				dataType:'JSON',
 			  	success: function( response ) {				
@@ -1292,14 +1351,14 @@ padding-bottom: 0px;
      <div data-role="fieldcontain">
        <label for="flipswitch">Sexo:</label>
        <select name="flipswitch" id="sexo2"  data-role="slider">
-         <option value="M">M</option>
-         <option value="F">F</option>
+         <option value="M" id="sexoM">M</option>
+         <option value="F" id="sexoF">F</option>
        </select>
      </div>
 	 	     
 	 <div data-role="fieldcontain" id="campo_email" >
        <label for="textinput">Email:</label>
-       <input type="email" name="email2" id="email2" value=""  placeholder="Podras recibir información adicional" />
+       <input type="email" name="email2" id="email2" value="S"  placeholder="Podras recibir información adicional" />
      </div>
 
 <div data-role="fieldcontain">
