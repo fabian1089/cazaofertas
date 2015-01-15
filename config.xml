@@ -15,7 +15,7 @@ Fabián Ceballos
 </author>
 
 <icon src="logo.png" gap:role="default" />
-
+<gap:plugin name="org.apache.cordova.inappbrowser" />
 <!--Plugin de notificaciones -->
 	<gap:plugin name="org.apache.cordova.device" />
     <gap:plugin name="com.phonegap.plugins.pushplugin"/> 
