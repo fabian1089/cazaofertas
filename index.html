@@ -163,6 +163,26 @@ padding-bottom: 0px;
 }
 
 
+.ui-listview>li p {
+font-size: .95em;
+font-weight: 400;
+display: block;
+margin: .6em 0;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: normal;
+}
+
+.ui-listview>.ui-li-static, .ui-listview>.ui-li-divider, .ui-listview>li>a.ui-btn {
+margin: 0;
+display: block;
+position: relative;
+text-align: left;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: normal;
+}
+
 	</style> 
 	
 	<!-- Esta es la parte para notificaciones push! -->
@@ -238,6 +258,7 @@ padding-bottom: 0px;
 	var sexo=window.localStorage.getItem("sexo"); 
 	var email=window.localStorage.getItem("email"); 
 	var enviar_correo=window.localStorage.getItem("enviar_correo"); 
+	var consecutivoUsuario=window.localStorage.getItem("consecutivoUsuario"); 
 	
 	document.getElementById("nombre2").value=nombre;
 	document.getElementById("celular2").value=celular;
@@ -246,6 +267,8 @@ padding-bottom: 0px;
 	if(sexo=="M"){ document.getElementById("sexoM").selected="true"};
 	if(sexo=="F"){ document.getElementById("sexoF").selected="true"};
 	if(enviar_correo!='N'){document.getElementById("enviar_correo2").checked='true';}
+	
+	document.getElementById("id_de_usuario").innerHTML=consecutivoUsuario;
 	
 	 }
 	
@@ -463,7 +486,7 @@ padding-bottom: 0px;
 	
 	}
 		
-	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia,cantidad,limite,disponibles, fotos, aplico, fotos_tienda,telefonos, formato_oferta, formato_tienda){
+	function mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia,cantidad,limite,disponibles, fotos, aplico, fotos_tienda,telefonos, formato_oferta, formato_tienda, nombre_foto,website){
 		
 		//consultar todo y pintarlo en detalle_oferta. 
 		//incluir: fotos de la oferta, de la tienda, mapa de còmo llegar
@@ -494,7 +517,7 @@ padding-bottom: 0px;
 			}
 		}		
 		if(fotos>0){
-		oferta+="<div align='center'> <img src='http://www.cazaofertasapp.com/imagenes/ofertas/"+id_oferta+"."+formato_oferta+"' style='max-width: 100%;'  alt='Imagen no disponible'> </div> </br>";
+		oferta+="<div align='center'> <img src='http://www.cazaofertasapp.com/imagenes/ofertas/"+nombre_foto+"."+formato_oferta+"' style='max-width: 100%;'  alt='Imagen no disponible'> </div> </br>";
 		}
 		// fin cambio foto oferta y cupòn
 		oferta+=descOferta;
@@ -503,10 +526,14 @@ padding-bottom: 0px;
 		tienda+="<h5> "+direccion+" ("+distancia+" kms) <br> "+telefonos+" </h5>";
 		tienda+="<p> "+tiendaDesc+" </p>";
 		
+		if(website!='' && website!=' '){
+		tienda+="<a href='"+website+"'> "+website+" </a>";
+		}
+		
 		var imagen_local="";
 		if(fotos_tienda>0){
 		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
-		imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+id_tienda+"."+formato_tienda+"' style='max-width: 100%;'  alt='Imagen no disponible'>"
+		imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+nombre_foto+"."+formato_tienda+"' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		}
 		
 		var mapa="<div class='video'>";
@@ -535,7 +562,7 @@ padding-bottom: 0px;
 	// Método recursivo para colocar varias ofertas en un mismo marker
 	function listaOfertas(cadena,pos,response){
 	
-	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\", \""+response[pos]['cantidad']+"\" , \""+response[pos]['limite']+"\" , \""+response[pos]['disponibles']+"\" , \""+response[pos]['fotos']+"\" , \""+response[pos]['aplico']+"\" , \""+response[pos]['fotos_tienda']+"\" , \""+response[pos]['telefonos']+"\" , \""+response[pos]['formato_oferta']+"\" , \""+response[pos]['formato_tienda']+"\" );'> <strong> "+response[pos]['titulo']+": </strong> <br> "+(response[pos]['descOferta']).substring(0, 40)+"...(leer más) <br> </p>"
+	cadena+="	  	  <p onclick='mostrarDetalles(\""+response[pos]['id_tienda']+"\",\""+response[pos]['id_oferta']+"\",\""+response[pos]['titulo']+"\",\""+response[pos]['nombre']+"\",\""+response[pos]['descOferta']+"\",\""+response[pos]['direccion']+"\",\""+response[pos]['tiendaDesc']+"\",\""+response[pos]['latitud']+"\",\""+response[pos]['longitud']+"\",\""+response[pos]['distancia']+"\", \""+response[pos]['cantidad']+"\" , \""+response[pos]['limite']+"\" , \""+response[pos]['disponibles']+"\" , \""+response[pos]['fotos']+"\" , \""+response[pos]['aplico']+"\" , \""+response[pos]['fotos_tienda']+"\" , \""+response[pos]['telefonos']+"\" , \""+response[pos]['formato_oferta']+"\" , \""+response[pos]['formato_tienda']+"\" , \""+response[pos]['nombre_foto']+"\", \""+response[pos]['website']+"\" );'> <strong> "+response[pos]['titulo']+": </strong> <br> "+(response[pos]['descOferta']).substring(0, 40)+"...(leer más) <br> </p>"
 																																					
 		if(pos>0){	
 			if(response[pos]['id_tienda']==response[pos-1]['id_tienda']){		
@@ -611,6 +638,9 @@ padding-bottom: 0px;
 					
 					var formato_tienda=response[cont]['formato_tienda'];
 					var formato_oferta=response[cont]['formato_oferta'];
+					var nombre_foto=response[cont]['nombre_foto'];
+					var website=response[cont]['website'];
+					
 					
 					if(id_oferta!=null){
 					cadena+=" <li data-marker-info='"+latitud+","+longitud+"' icono='"+icono+"1' >";
@@ -633,18 +663,26 @@ padding-bottom: 0px;
 							// cambio 02/12/2014
 					if(id_oferta!=null){	  
 								  
-					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\" , \""+cantidad+"\" , \""+limite+"\" , \""+disponibles+"\" , \""+fotos+"\" , \""+aplico+"\", \""+fotos_tienda+"\" , \""+telefonos+"\", \""+formato_oferta+"\" , \""+formato_tienda+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
-					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1> </br></br>"; //título
-					cadena+="   	  	<div class='ui-li-count'>";
-					cadena+="      	  		<span>"+titulo+" - "+distancia+" Kms</span>"; //cuerpo
-					cadena+="  	  		</div>	            	  </a>";
+					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\" , \""+cantidad+"\" , \""+limite+"\" , \""+disponibles+"\" , \""+fotos+"\" , \""+aplico+"\", \""+fotos_tienda+"\" , \""+telefonos+"\", \""+formato_oferta+"\" , \""+formato_tienda+"\" , \""+nombre_foto+"\" , \""+website+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
+					//cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1> "; //título
+					//cadena+="   	  	<div class='ui-li-count'>";
+					cadena+="   <table width='100%'> <tr> <td colspan='2' align='center'>"+nombre+" - "+distancia+" Kms </td></tr>";
+					if(fotos==1){
+					cadena+="  <tr> <td width='50%' align='center'> <img src='http://www.cazaofertasapp.com/imagenes/ofertas/"+nombre_foto+"."+formato_oferta+"' style='max-width: 100%;'>  </td> "; 
+					cadena+="<td> <div align='center' ><p> "+titulo+" </p> </div> </td> </tr>   "; }else{ //cuerpo
+					
+					cadena+="<tr> <td colspan='2' align='center'> <p> "+titulo+" </p></td> </tr>"
+					}
+					
+					//cadena+="  	  		</div>	       
+					cadena+="</table> </a>  ";
 					
 					}else{
 						
 					cadena+="      	  <a class='item_lista' href='#' data-rel='dialog' onclick='mostrarLocal(\""+id_tienda+"\");' >";// aquì mandar a una funcion que traiga los detalles en otra pantalla, enviarle el id de la oferta
 					cadena+="  	  	<h1 class='ui-gmap-marker-title wrap'>"+nombre+"</h1> </br></br>"; //título
 					cadena+="   	  	<div class='ui-li-count'>";
-					cadena+="      	  		<span>Actualmente sin ofertas - "+distancia+" Kms</span>"; //cuerpo
+					cadena+="      	  		<span>Actualmente sin ofertas - "+distancia+" Kms    </span>"; //cuerpo
 					cadena+="  	  		</div>	            	  </a>";
 						
 						
@@ -876,6 +914,7 @@ padding-bottom: 0px;
 					if(response['exito']=='exito'){
 					//alert('Registro exitoso!!');
 					window.localStorage.setItem("consecutivoUsuario",response['id']);
+					cargarDatos();
 					document.location.href='index.html#categorias';
 					}else{
 					alert('Por favor intentelo de nuevo');
@@ -965,6 +1004,7 @@ padding-bottom: 0px;
 		<a href="#panel" id="abre_panel" class="panel-btn" ></a> <!-- data-icon="grid" -->
 	</div>
 
+
 	<div data-role="panel" id="panel" data-position-fixed="true" data-position="left" data-display="overlay">
 		<ul data-role="listview">
 			<li data-icon="search"><a href="#busqueda" class="panel_li"	>Busqueda</a></li>
@@ -1021,7 +1061,7 @@ padding-bottom: 0px;
      </div>
      <div data-role="fieldcontain">
        <label for="textinput">Celular:</label>
-       <input type="number" name="celular" id="celular" value="" required="required" placeholder="Algunas ofertas requieren confirmación telefónica"/>
+       <input type="number" name="celular" id="celular" value="" required placeholder="Algunas ofertas requieren confirmación telefónica"/>
      </div>
 	 
      <div data-role="fieldcontain">
@@ -1349,7 +1389,7 @@ padding-bottom: 0px;
    -->
    <form action="index.html#config" method="post"> 
     	<div data-role="fieldcontain">
-		<label> ID Usuario: </label> <div align="left"> <script> var id_usuario=window.localStorage.getItem("consecutivoUsuario"); 
+		<label> ID Usuario: </label> <div align="left" id="id_de_usuario"> <script> var id_usuario=window.localStorage.getItem("consecutivoUsuario"); 
 	document.write(id_usuario); </script> </div>
 		</div>
 	<div data-role="fieldcontain">
@@ -1400,7 +1440,7 @@ padding-bottom: 0px;
 <!-- Fin Editar Perfil -->
 
 <!-- Mapa -->
-	<div data-role="page" id="map-page" class="page" >
+	<div data-role="page" id="map-page" class="page" data-theme="b" >
 		
 		
 		<div data-role="header" class="header" data-position="fixed">
