@@ -527,7 +527,7 @@ white-space: normal;
 		tienda+="<p> "+tiendaDesc+" </p>";
 		
 		if(website!='' && website!=' '){
-		tienda+="<a href='"+website+"'> "+website+" </a>";
+		tienda+="<a onclick='window.open(\"http://"+website+"\");' > "+website+" </a>";
 		}
 		
 		var imagen_local="";
