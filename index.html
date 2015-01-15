@@ -399,8 +399,13 @@ white-space: normal;
 				var telefonos=response[0]['telefonos'];
 				
 				var formato_tienda=response[0]['formato_tienda'];
+				var website=response[0]['website'];
 				
 				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) <br> "+telefonos+"";
+				
+				if(website!='' && website!=' '){
+					cadena+="<br> <a onclick='window.open(\"http://"+website+"\", \"_system\", \"location=yes\" );' > "+website+" </a> <br>";
+					}
 				
 				if(fotos>0){
 				cadena+="<br> <a href='index.html#imagenes' data-rel='dialog'> Ver local </a>"
