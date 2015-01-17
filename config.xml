@@ -15,6 +15,8 @@ Fabián Ceballos
 </author>
 
 <icon src="logo.png" gap:role="default" />
+<preference name="android-minSdkVersion"    value="7" />
+<preference name="android-targetSdkVersion" value="11" /> 
 <gap:plugin name="org.apache.cordova.inappbrowser" />
 <!--Plugin de notificaciones -->
 	<gap:plugin name="org.apache.cordova.device" />
