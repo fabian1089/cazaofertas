@@ -111,8 +111,21 @@ var app = {
 					var longitud=response[cont]['longitud'];
 					var distancia=response[cont]['distancia'];
 					
-					mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia);
+					var cantidad=response[cont]['cantidad'];
+					var limite=response[cont]['limite'];
+					var disponibles=response[cont]['disponibles'];
+					var fotos=response[cont]['fotos'];
+					var aplico=response[cont]['aplico'];
+					var fotos_tienda=response[cont]['fotos_tienda'];
+					var telefonos=response[cont]['telefonos'];
+					var formato_oferta=response[cont]['formato_oferta'];
+					var formato_tienda=response[cont]['formato_tienda'];
+					var nombre_foto=response[cont]['nombre_foto'];
+					var website=response[cont]['website'];
+					
+					mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia, cantidad,limite,disponibles, fotos, aplico, fotos_tienda,telefonos, formato_oferta, formato_tienda, nombre_foto,website);
 				
+				//falta: cantidad,limite,disponibles, fotos, aplico, fotos_tienda,telefonos, formato_oferta, formato_tienda, nombre_foto,website
 					
 				
 				},
