@@ -580,6 +580,13 @@ white-space: normal;
 		
 	function buscarOfertas(){ 
 	
+	$.mobile.loading( 'show', {
+	text: 'Cargando ofertas',
+	textVisible: true,
+	theme: 'b',
+	html: ""
+});
+	
 	$map = $( "#map-canvas" ),
     $list = $( "#list-canvas" );
 	$("#list-switch").checked="true";
@@ -699,6 +706,7 @@ white-space: normal;
 					}				
 
 					document.getElementById("list-results").innerHTML =cadena;
+					$.mobile.loading( "hide" );
 					document.location.href="index.html#map-page";
 						$("#list-results").listview("refresh");	
 						   
