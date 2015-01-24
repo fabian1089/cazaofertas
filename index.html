@@ -244,7 +244,7 @@ white-space: normal;
 			  	},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se completó el registro de los datos. Por favor verifique su conexión a internet');
+				alert('No se puderon actualizar los datos. Por favor verifique su conexión a internet');
 					console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					$.mobile.loading( "hide" );
 				}
@@ -281,7 +281,14 @@ white-space: normal;
 	}
 	
 	function errorpos(){
-	alert('error al obtener la geolocalización');
+	alert('Para una mejor experiencia, por favor activa tu GPS');
+
+	var latitud=window.localStorage.getItem('latitud');
+	var longitud=window.localStorage.getItem('longitud');
+	 
+	if(latitud==null){ latitud=3.374963638067219; }
+	if(longitud==null){ longitud=-76.51804110565183; }
+	
 	}
 	
 	 document.addEventListener("deviceready", cargarTodo, false);
@@ -337,7 +344,7 @@ white-space: normal;
 				
 				},
 				error: function (jqXHR, textStatus, errorThrown){
-				alert('Ocurrió un error durante la conexión a la base de datos');
+				alert('Ocurrió un error durante la transacción, por favor revisa tu conexión a internet');
 				}
 	});
 	
@@ -380,6 +387,63 @@ white-space: normal;
 	
 	
 	}
+	
+	function mostrarOfertaPorId(codigo_oferta){
+	
+			  var id_usuario=window.localStorage.getItem("consecutivoUsuario");
+	          var latitud=window.localStorage.getItem('latitud');
+			  var longitud=window.localStorage.getItem('longitud');
+              //var codigo_oferta= e.message.split('cod:');
+			  
+			  // alert('message = '+e.message+' msgcnt = '+e.msgcnt+codigo_oferta[1]);
+			  
+				$.ajax({
+			  	url: "http://www.cazaofertasapp.com/ofertaPorId.php?pass=fghkdfh432hhjg&codigo_oferta="+codigo_oferta+"&latitud="+latitud+"&longitud="+longitud+"&id_usuario="+id_usuario,
+				contentType: "application/json",
+				//data:datos,	
+				type:'GET',
+				dataType:'JSON',
+			  	success: function( response ) {	
+				
+				var cont=0;
+					var id_tienda=response[cont]['id_tienda'];
+					var id_oferta=response[cont]['id_oferta'];
+					var titulo=response[cont]['titulo'];
+					var nombre=response[cont]['nombre'];
+					var descOferta=response[cont]['descOferta'];
+					var direccion=response[cont]['direccion'];
+					var tiendaDesc=response[cont]['tiendaDesc'];
+					var latitud=response[cont]['latitud'];
+					var longitud=response[cont]['longitud'];
+					var distancia=response[cont]['distancia'];
+					
+					var cantidad=response[cont]['cantidad'];
+					var limite=response[cont]['limite'];
+					var disponibles=response[cont]['disponibles'];
+					var fotos=response[cont]['fotos'];
+					var aplico=response[cont]['aplico'];
+					var fotos_tienda=response[cont]['fotos_tienda'];
+					var telefonos=response[cont]['telefonos'];
+					var formato_oferta=response[cont]['formato_oferta'];
+					var formato_tienda=response[cont]['formato_tienda'];
+					var nombre_foto=response[cont]['nombre_foto'];
+					var website=response[cont]['website'];
+					
+					mostrarDetalles(id_tienda,id_oferta,titulo,nombre,descOferta,direccion,tiendaDesc,latitud,longitud,distancia, cantidad,limite,disponibles, fotos, aplico, fotos_tienda,telefonos, formato_oferta, formato_tienda, nombre_foto,website);
+				
+				//falta: cantidad,limite,disponibles, fotos, aplico, fotos_tienda,telefonos, formato_oferta, formato_tienda, nombre_foto,website
+					
+				
+				},
+				timeout: 6000,  // Timeout after 6 seconds
+				error: function(jqXHR, textStatus, errorThrown) {
+				alert('No se pudo realizar la acción. Por favor verifique su conexión a internet');
+					//console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
+					$.mobile.loading( "hide" );
+				}
+			}); 
+	
+	}	
 	
 	function mostrarLocal(id_local){
 	
@@ -451,7 +515,7 @@ white-space: normal;
 				cadena+=" <h3>"+titulo+"</h3> ";
 				if(limite=="S"){cadena+="<p> Oferta limitada! Disponibles: "+disponibles+"  de "+cantidad+" </p>  "}
 				cadena+=" <p>"+descOferta+"</p >";
-				//cadena+=" <a onclick='mostrarDetalles(\""+id_tienda+"\",\""+id_oferta+"\",\""+titulo+"\",\""+nombre+"\",\""+descOferta+"\",\""+direccion+"\",\""+tiendaDesc+"\",\""+latitud+"\",\""+longitud+"\",\""+distancia+"\" , \""+cantidad+"\" , \""+limite+"\" , \""+disponibles+"\" , \""+fotos+"\" , \""+aplico+"\", \""+fotos_tienda+"\" , \""+telefonos+"\");' > ir a oferta </a>	  "
+				cadena+=" <br> <a onclick='mostrarOfertaPorId("+id_oferta+");' > Ir a oferta </a>	  "
 	  //fin del for  
 			
 	 			 cadena+=" </div> </div> ";	
@@ -487,7 +551,7 @@ white-space: normal;
 	
 	}
 	
-	//Chamboneada: método que vuelve y carga el mapa para que el zoom funcione
+	//Chambonada: método que vuelve y carga el mapa para que el zoom funcione
 	function recargaMapa() { 
 	
 		var lat= window.localStorage.getItem('latitud');
@@ -857,7 +921,7 @@ white-space: normal;
 					},
 				//timeout: 6000,  // Timeout after 6 seconds
 				error: function(jqXHR, textStatus, errorThrown) {
-				alert('No se cargaron las categorías (2). Por favor verifique su conexión a internet');
+				alert('No se cargaron las categorías. Por favor verifique su conexión a internet');
 				//	console.log("Error, textStatus: " + textStatus + " errorThrown: "+ errorThrown);
 					//$.mobile.loading( "hide" );
 				}
