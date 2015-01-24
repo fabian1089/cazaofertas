@@ -479,7 +479,13 @@ white-space: normal;
 				
 				var formato_tienda=response[0]['formato_tienda'];
 				
+				var website=response[0]['website'];
+				
 				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) <br> "+telefonos+"";
+				
+				if(website!='' && website!=' '){
+		cadena+="<br> <a onclick='window.open(\"http://"+website+"\", \"_system\", \"location=yes\" );' > "+website+" </a> <br>";
+					}
 				
 				if(fotos>0){
 				cadena+="<br> <a href='index.html#imagenes' data-rel='dialog'> Ver local </a>"
@@ -615,7 +621,7 @@ white-space: normal;
 		tienda+="<p> "+tiendaDesc+" </p>";
 		
 		if(website!='' && website!=' '){
-		tienda+=website;//"<a onclick='window.open(\"http://"+website+"\");' > "+website+" </a>";
+		cadena+="<br> <a onclick='window.open(\"http://"+website+"\", \"_system\", \"location=yes\" );' > "+website+" </a> <br>";
 		}
 		
 		var imagen_local="";
