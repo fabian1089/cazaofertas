@@ -286,11 +286,12 @@ white-space: normal;
 	
 	 document.addEventListener("deviceready", cargarTodo, false);
 	 
-	 window.addEventListener('load', function() {
+	/* window.addEventListener('load', function() {
     new FastClick(document.body);
-}, false);
+}, false);*/
 	 
 	function cargarTodo(){
+		FastClick.attach(document.body);
 	$.mobile.defaultPageTransition='slide';
 		 listCategorias();
 		 cargarDatos();
