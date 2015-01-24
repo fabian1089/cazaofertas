@@ -27,11 +27,11 @@
 				position: absolute;
 				background-image: url(img/menu_btn.png);
 				background-repeat: no-repeat;
-				width: 50px;
-				height: 20px;
-				box-shadow: none;
+				width: 18px;
+				height: 18px;
+				box-shadow: none !important;
 				background-color: transparent !important;
-				border: none;
+				border: none !important;
 				left: -5px;
 				top: 0;
 				margin-top: 6px !important;
@@ -44,8 +44,8 @@
 		}
 		
 	.page{
-				color: white !important;
-				background-color:#252525 !important; 
+				color: #891313  !important;
+				/*background-color:#252525 !important; */
 				text-shadow:none !important;
 				font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
 				font-size:13px !important;
@@ -60,32 +60,32 @@
 	#panel, .panel_li{
 				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: black !important;
+				color: 891313 !important;
 			}  
 	#panel2, .panel_li{
 				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: black !important;
+				color: 891313 !important;
 			}  
 #panel3, .panel_li{
 				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: black !important;
+				color: 891313 !important;
 			}  
 #panel4, .panel_li{
 				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: black !important;
+				color: 891313 !important;
 			}  
 #panel5, .panel_li{
 				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: black !important;
+				color: 891313 !important;
 			}  
 #panel6, .panel_li{
 				background-color: #F0E1E1 !important;
 				text-shadow:none !important;
-				color: black !important;
+				color: 891313 !important;
 			}  			
 			
 			
@@ -117,11 +117,12 @@
 	<script src="_assets/js/index.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
-	
 	<!-- Google Maps JS assets are loaded at bottom of page for performance -->
+    
+    <script type='application/javascript' src='js/fastclick.js'></script>
 
 <!--Estilos del tema!!! -->
-	<style>
+	<style> /*
 	.ui-page-theme-b .ui-btn, html .ui-bar-b .ui-btn, html .ui-body-b .ui-btn, html body .ui-group-theme-b .ui-btn, html head+body .ui-btn.ui-btn-b, .ui-page-theme-b .ui-btn:visited, html .ui-bar-b .ui-btn:visited, html .ui-body-b .ui-btn:visited, html body .ui-group-theme-b .ui-btn:visited, html head+body .ui-btn.ui-btn-b:visited {
 
 background-color: #F0E1E1;
@@ -163,7 +164,7 @@ padding-top: 0px;
 padding-bottom: 0px;
 }
 
-
+*/
 .ui-listview>li p {
 font-size: .95em;
 font-weight: 400;
@@ -185,6 +186,8 @@ white-space: normal;
 }
 
 	</style> 
+    
+    <link rel="stylesheet" href="css/themes/default/rojo.css"> 	
 	
 	<!-- Esta es la parte para notificaciones push! -->
 	    <script type="text/javascript" src="PushNotification.js"></script>
@@ -283,6 +286,10 @@ white-space: normal;
 	
 	 document.addEventListener("deviceready", cargarTodo, false);
 	 
+	 window.addEventListener('load', function() {
+    new FastClick(document.body);
+}, false);
+	 
 	function cargarTodo(){
 	$.mobile.defaultPageTransition='slide';
 		 listCategorias();
@@ -375,6 +382,13 @@ white-space: normal;
 	
 	function mostrarLocal(id_local){
 	
+	$.mobile.loading( 'show', {
+	text: 'Cargando local',
+	textVisible: true,
+	theme: 'c',
+	html: ""
+});
+	
 	//alert('Listar todas las ofertas del local '+id_local);
 	var latitud=window.localStorage.getItem('latitud');
 	var longitud=window.localStorage.getItem('longitud');
@@ -399,13 +413,8 @@ white-space: normal;
 				var telefonos=response[0]['telefonos'];
 				
 				var formato_tienda=response[0]['formato_tienda'];
-				var website=response[0]['website'];
 				
 				var cadena="<div align='center'> <h3>  "+nombre+"  </h3> "+direccion+" ("+distancia+" kms) <br> "+telefonos+"";
-				
-				if(website!='' && website!=' '){
-					cadena+="<br> <a onclick='window.open(\"http://"+website+"\", \"_system\", \"location=yes\" );' > "+website+" </a> <br>";
-					}
 				
 				if(fotos>0){
 				cadena+="<br> <a href='index.html#imagenes' data-rel='dialog'> Ver local </a>"
@@ -460,6 +469,7 @@ white-space: normal;
 				cadena+="<div align='center'> <a  data-role='button' data-rel='back' data-icon='arrow-l'>Volver</a> </div>";
 				
 				document.getElementById('contenido_local').innerHTML=cadena;
+				$.mobile.loading( "hide" );
 				//$("#listado_local").listview("refresh");
 				$('#contenido_local').trigger("create");
 				document.location.href="#local_detalle";
@@ -533,7 +543,7 @@ white-space: normal;
 		tienda+="<p> "+tiendaDesc+" </p>";
 		
 		if(website!='' && website!=' '){
-		tienda+="<a onclick='window.open(\"http://"+website+"\", \"_system\", \"location=yes\" );' > "+website+" </a>";
+		tienda+=website;//"<a onclick='window.open(\"http://"+website+"\");' > "+website+" </a>";
 		}
 		
 		var imagen_local="";
@@ -583,10 +593,10 @@ white-space: normal;
 	$.mobile.loading( 'show', {
 	text: 'Cargando ofertas',
 	textVisible: true,
-	theme: 'b',
+	theme: 'c',
 	html: ""
 });
-	
+		
 	$map = $( "#map-canvas" ),
     $list = $( "#list-canvas" );
 	$("#list-switch").checked="true";
@@ -706,7 +716,6 @@ white-space: normal;
 					}				
 
 					document.getElementById("list-results").innerHTML =cadena;
-					$.mobile.loading( "hide" );
 					document.location.href="index.html#map-page";
 						$("#list-results").listview("refresh");	
 						   
@@ -1037,7 +1046,7 @@ white-space: normal;
 <!-- fin pagina de bienvenida --> 
 
 <!-- Registro --> 
-<div data-role="page"  id="registro" class="page" data-theme="b">
+<div data-role="page"  id="registro" class="page" data-theme="c">
 <!-- <div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
 <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -1119,7 +1128,7 @@ white-space: normal;
 <!-- Fin Registro -->
 
 <!-- Categorias -->
-<div data-role="page" id="categorias" class="page" data-theme="b">
+<div data-role="page" id="categorias" class="page" data-theme="c">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -1139,7 +1148,7 @@ white-space: normal;
   
   <span> Selecciona las categorías de las cuales quieres recibir <strong>Super ofertas</strong> </span>
     <div data-role="fieldcontain" align="center">
-      <fieldset data-role="controlgroup" data-type="vertical" id="listCateg">
+      <fieldset data-role="controlgroup" data-type="vertical" id="listCateg" >
     
       <!--  <input type="checkbox" name="checkbox1" id="checkbox1_0" class="custom" value="" />
         <label for="checkbox1_0">Opción</label>
@@ -1167,7 +1176,7 @@ white-space: normal;
 <!-- Fin categorías -->
 
 <!-- Busqueda --> 
-<div data-role="page" class="page" id="busqueda" data-theme="b" >
+<div data-role="page" class="page" id="busqueda" data-theme="c" >
 
 
 <div data-role="header" class="header" data-position="fixed">
@@ -1199,7 +1208,7 @@ white-space: normal;
    <div data-role="fieldcontain" class="ui-field-contain ui-body ui-br" id="categorias_buscar_cont">
 		<label for="select-choice-9" class="select ui-select">Categorías:</label>
 		<div class="ui-select">
-        <select name="select-choice-9" id="categorias_buscar" multiple="multiple" data-native-menu="false" tabindex="-1">
+        <select data-theme="c" name="select-choice-9" id="categorias_buscar" multiple="multiple" data-native-menu="false" tabindex="-1">
 			
 			<!--<option>Categorías</option> listCategorias();
 			<option value="standard" selected>Standard: 7 day</option>
@@ -1227,7 +1236,7 @@ white-space: normal;
 <!-- Fin Busqueda -->
 
 <!-- Detalle oferta -->
-<div data-role="page" id="detalle_oferta" class="page" data-theme="b">
+<div data-role="page" id="detalle_oferta" class="page" data-theme="c">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -1344,7 +1353,7 @@ white-space: normal;
 <!-- Fin abandonar -->
 
 <!-- detalle local -->
-<div data-role="page" id="local_detalle" class="page" data-theme="b">
+<div data-role="page" id="local_detalle" class="page" data-theme="c">
   
   <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -1370,7 +1379,7 @@ white-space: normal;
 <!-- detalle local -->
 
 <!-- Editar Perfil --> 
-<div data-role="page"  id="editar_perfil" class="page" data-theme="b">
+<div data-role="page"  id="editar_perfil" class="page" data-theme="c">
 <!-- <div data-role="page" class="jqm-demos" id="registro" class="page" >  -->
 <div data-role="header" class="header" data-position="fixed">
 		<div align="center"> <img src="img/header.png" alt="CazaOfertas" width="150" height="40"> </div>
@@ -1454,7 +1463,7 @@ white-space: normal;
 <!-- Fin Editar Perfil -->
 
 <!-- Mapa -->
-	<div data-role="page" id="map-page" class="page" data-theme="b" >
+	<div data-role="page" id="map-page" class="page" data-theme="c" >
 		
 		
 		<div data-role="header" class="header" data-position="fixed">
