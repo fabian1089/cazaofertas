@@ -621,13 +621,13 @@ white-space: normal;
 		tienda+="<p> "+tiendaDesc+" </p>";
 		
 		if(website!='' && website!=' '){
-		tienda+="<br> <a onclick='window.open(\"http://"+website+"\", \"_system\", \"location=yes\" );' > "+website+" </a> <br>";
+		tienda+=" <a onclick='window.open(\"http://"+website+"\", \"_system\", \"location=yes\" );' > "+website+" </a> <br><br>";
 		}
 		
 		var imagen_local="";
 		if(fotos_tienda>0){
 		tienda+="<a href='index.html#imagenes' data-rel='dialog' > Ver local </a> </div>";
-		imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+nombre_foto+"."+formato_tienda+"' style='max-width: 100%;'  alt='Imagen no disponible'>"
+		imagen_local="<img src='http://www.cazaofertasapp.com/imagenes/locales/"+id_tienda+"."+formato_tienda+"' style='max-width: 100%;'  alt='Imagen no disponible'>"
 		}
 		
 		var mapa="<div class='video'>";
