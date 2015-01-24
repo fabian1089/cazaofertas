@@ -119,7 +119,7 @@
 	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
 	<!-- Google Maps JS assets are loaded at bottom of page for performance -->
     
-   <!-- <script type='application/javascript' src='js/fastclick.js'></script> -->
+    <script type='application/javascript' src='js/fastclick.js'></script> 
 
 <!--Estilos del tema!!! -->
 	<style> /*
@@ -291,7 +291,7 @@ white-space: normal;
 }, false);*/
 	 
 	function cargarTodo(){
-		//FastClick.attach(document.body);
+		FastClick.attach(document.body);
 	$.mobile.defaultPageTransition='slide';
 		 listCategorias();
 		 cargarDatos();
@@ -509,6 +509,13 @@ white-space: normal;
 		//incluir: fotos de la oferta, de la tienda, mapa de còmo llegar
 		//hacerlo como pop up o como página?
 		
+		$.mobile.loading( 'show', {
+	text: 'Cargando detalles',
+	textVisible: true,
+	theme: 'c',
+	html: ""
+}); 
+		
 		var lat= window.localStorage.getItem('latitud');
 	 	var lon= window.localStorage.getItem('longitud');
 		
@@ -566,7 +573,8 @@ white-space: normal;
 		
 		//$('#detalle_oferta').trigger("create");
 		
-		window.localStorage.setItem('ofertaActual',id_oferta);		
+		window.localStorage.setItem('ofertaActual',id_oferta);	
+		$.mobile.loading( "hide" );	
 		window.location.href="index.html#detalle_oferta";
 		
 	/*	$.mobile.changePage('#detalle_oferta',{
