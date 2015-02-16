@@ -16,7 +16,7 @@ Fabián Ceballos
 
 <icon src="logo.png" gap:role="default" />
 <preference name="android-minSdkVersion"    value="7" />
-<preference name="android-targetSdkVersion" value="11" /> 
+<preference name="android-targetSdkVersion" value="19" /> 
 
 <preference name="permissions" value="none"/>
 
